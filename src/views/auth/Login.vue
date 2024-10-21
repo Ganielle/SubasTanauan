@@ -119,9 +119,10 @@ export default {
       //  API HERE
       this.$swal({
         title: "Welcome back!",
-        icon: "success"
+        icon: "success",
+        allowOutsideClick: false
       }).then(() => {
-        this.$router.push({path: "/"})
+        this.$router.push({path: "/admin"})
       })
     }
   }

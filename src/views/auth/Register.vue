@@ -282,11 +282,10 @@ export default {
       //  ADD API HERE
       this.$swal({
         title: "Your account has successfully registered",
-        icon: "success"
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.$router.push({path: "/"})
-        }
+        icon: "success",
+        allowOutsideClick: false
+      }).then(() => {
+        this.$router.push({path: "/"})
       })
 
 

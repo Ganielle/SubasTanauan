@@ -21,7 +21,7 @@
           </div>
         </div>
       </div>
-      <p class="text-sm text-blueGray-400 mt-4">
+      <p class="text-sm text-blueGray-400 mt-4" :hidden="subStatsHidden">
         <span class="mr-2" :class="[statPercentColor]">
           <i
             :class="[
@@ -39,6 +39,10 @@
 export default {
   name: "card-stats",
   props: {
+    subStatsHidden: {
+      type: Boolean,
+      default: true
+    },
     statSubtitle: {
       type: String,
       default: "Traffic",

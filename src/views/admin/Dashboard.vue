@@ -1,35 +1,80 @@
 <template>
   <div>
-    <div class="flex flex-wrap">
-      <div class="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-        <card-line-chart />
-      </div>
-      <div class="w-full xl:w-4/12 px-4">
-        <card-bar-chart />
-      </div>
-    </div>
-    <div class="flex flex-wrap mt-4">
-      <div class="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-        <card-page-visits />
-      </div>
-      <div class="w-full xl:w-4/12 px-4">
-        <card-social-traffic />
+    <a
+      class="text-black text-xl uppercase lg:inline-block font-semibold pt-12"
+      href="javascript:void(0)"
+    >
+      Admin Dashboard
+    </a>
+    <!-- Header -->
+    <div class="relative pb-20 pt-8">
+      <div class="px-4 md:px-10 mx-auto w-full">
+        <div>
+          <p class="text-lg font-semibold">WALLETS</p>
+          <hr style="border-color: black;">
+          <br/>
+          <!-- Card stats -->
+          <div class="flex flex-wrap">
+            <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+              <card-stats
+                statSubtitle="TOTAL INCOME"
+                statTitle="₱0.00"
+                statIconName="fas fa-wallet"
+                statIconColor="bg-emerald-500"
+              />
+            </div>
+            <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+              <card-stats
+                statSubtitle="BIDDING INCOME"
+                statTitle="₱0.00"
+                statIconName="fas fa-wallet"
+                statIconColor="bg-red-500"
+              />
+            </div>
+            <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+              <card-stats
+                statSubtitle="LOAN INCOME"
+                statTitle="₱0.00"
+                statIconName="fas fa-wallet"
+                statIconColor="bg-pink-500"
+              />
+            </div>
+          </div>
+        </div>
+        <br/><br/>
+        <div>
+          <p class="text-lg font-semibold">LOANS</p>
+          <hr style="border-color: black;">
+          <br/>
+          <div class="flex flex-wrap">
+            <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+              <card-stats
+                statSubtitle="TOTAL ACTIVE LOAN"
+                statTitle="₱0.00"
+                statIconName="fas fa-hand-holding-dollar"
+                statIconColor="bg-orange-500"
+              />
+            </div>
+            <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+              <card-stats
+                statSubtitle="TOTAL FINISHED LOAN"
+                statTitle="₱0.00"
+                statIconName="fas fa-hand-holding-dollar"
+                statIconColor="bg-emerald-500"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import CardLineChart from "@/components/Cards/CardLineChart.vue";
-import CardBarChart from "@/components/Cards/CardBarChart.vue";
-import CardPageVisits from "@/components/Cards/CardPageVisits.vue";
-import CardSocialTraffic from "@/components/Cards/CardSocialTraffic.vue";
+import CardStats from "@/components/Cards/CardStats.vue";
 export default {
   name: "dashboard-page",
   components: {
-    CardLineChart,
-    CardBarChart,
-    CardPageVisits,
-    CardSocialTraffic,
+    CardStats,
   },
 };
 </script>
