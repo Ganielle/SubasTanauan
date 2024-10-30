@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import { createWebHistory, createRouter } from "vue-router";
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import VModal from 'vue-js-modal/dist/index.nocss.js'
 
 // styles
 
@@ -20,19 +21,12 @@ import Auth from "@/layouts/Auth.vue";
 // views for Admin layout
 
 import Dashboard from "@/views/admin/Dashboard.vue";
-import Settings from "@/views/admin/Settings.vue";
-import Tables from "@/views/admin/Tables.vue";
-import Maps from "@/views/admin/Maps.vue";
+import ManageaccountAdmin from '@/views/superadmin/manageaccount/Admin.vue'
 
 // views for Auth layout
 
 import Login from "@/views/auth/Login.vue";
 import Register from "@/views/auth/Register.vue";
-
-// views without layouts
-
-import Landing from "@/views/Landing.vue";
-import Profile from "@/views/Profile.vue";
 
 // routes
 
@@ -47,27 +41,10 @@ const routes = [
         component: Dashboard,
       },
       {
-        path: "/admin/settings",
-        component: Settings,
-      },
-      {
-        path: "/admin/tables",
-        component: Tables,
-      },
-      {
-        path: "/admin/maps",
-        component: Maps,
+        path: "/admin/manageuser/admin",
+        component: ManageaccountAdmin,
       },
     ],
-  },
-  
-  {
-    path: "/landing",
-    component: Landing,
-  },
-  {
-    path: "/profile",
-    component: Profile,
   },
   {
     path: "/",
@@ -92,4 +69,4 @@ const router = createRouter({
   routes,
 });
 
-createApp(App).use(router).use(VueSweetalert2).mount("#app");
+createApp(App).use(router).use(VModal, { componentName: 'modal'}).use(VueSweetalert2).mount("#app");

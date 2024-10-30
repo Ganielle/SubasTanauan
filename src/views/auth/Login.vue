@@ -122,7 +122,7 @@ export default {
         icon: "success",
         allowOutsideClick: false
       }).then(() => {
-        // this.$router.push({path: "/admin"})
+        this.$router.push({path: "/admin"})
       })
     }
   }
