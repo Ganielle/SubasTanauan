@@ -2,7 +2,6 @@ import { createApp } from "vue";
 import { createWebHistory, createRouter } from "vue-router";
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
-import VModal from 'vue-js-modal/dist/index.nocss.js'
 
 // styles
 
@@ -12,7 +11,7 @@ import "@/assets/styles/tailwind.css";
 // mouting point for the whole app
 
 import App from "@/App.vue";
-
+import { vfmPlugin } from 'vue-final-modal'
 // layouts
 
 import Admin from "@/layouts/Admin.vue";
@@ -20,7 +19,7 @@ import Auth from "@/layouts/Auth.vue";
 
 // views for Admin layout
 
-import Dashboard from "@/views/admin/Dashboard.vue";
+import Dashboard from "@/views/superadmin/Dashboard.vue";
 import ManageaccountAdmin from '@/views/superadmin/manageaccount/Admin.vue'
 
 // views for Auth layout
@@ -69,4 +68,4 @@ const router = createRouter({
   routes,
 });
 
-createApp(App).use(router).use(VModal, { componentName: 'modal'}).use(VueSweetalert2).mount("#app");
+createApp(App).use(router).use(vfmPlugin).use(VueSweetalert2).mount("#app");

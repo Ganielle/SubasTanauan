@@ -109,7 +109,7 @@
 import AdminTable from "@/components/Subastanauan/Dashboard/Superadmin/Admintable.vue";
 
 export default {
-  name: "manage-account-admin-page",
+  name: "manage-account-financer-page",
   data() {
     return {
       showModal: false,
