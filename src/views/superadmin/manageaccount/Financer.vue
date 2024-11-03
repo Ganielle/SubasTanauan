@@ -200,7 +200,7 @@ export default {
         confirmButtonText: "Yes, delete it!"
       }).then(async (data) => {
         if (data.isConfirmed){
-          const response = await fetch(`http://localhost:5000/users/deletestaff`, {
+          const response = await fetch(`${process.env.VUE_APP_API_URL}/users/deletestaff`, {
             method: 'POST',
             headers: {
               "Content-Type": "application/json"
@@ -242,7 +242,7 @@ export default {
     },
     async listUsers() {
       this.loadingapi = true
-      const response = await fetch(`http://localhost:5000/users/liststaffs?authfilter=financer&fullnamefilter=${this.search}&page=${this.pagination.page}&limit=${this.pagination.limit}`, {
+      const response = await fetch(`${process.env.VUE_APP_API_URL}/users/liststaffs?authfilter=financer&fullnamefilter=${this.search}&page=${this.pagination.page}&limit=${this.pagination.limit}`, {
         method: 'GET',
         headers: {
           "Content-Type": "application/json"
@@ -365,7 +365,7 @@ export default {
         return;
       }
 
-      const response = await fetch(`http://localhost:5000/users/createstaffs`, {
+      const response = await fetch(`${process.env.VUE_APP_API_URL}/users/createstaffs`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"
@@ -478,7 +478,7 @@ export default {
         return;
       }
 
-      const response = await fetch(`http://localhost:5000/users/editstaff`, {
+      const response = await fetch(`${process.env.VUE_APP_API_URL}/users/editstaff`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"
