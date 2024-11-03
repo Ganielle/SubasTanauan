@@ -10,7 +10,7 @@
             class="font-semibold text-lg"
             :class="[color === 'light' ? 'text-blueGray-700' : 'text-white']"
           >
-            Admin List
+            Customer Support List
           </h3>
         </div>
       </div>
@@ -126,7 +126,6 @@
     </div>
   </div>
 </template>
-
 <script>
 export default {
   data() {

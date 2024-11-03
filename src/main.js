@@ -19,8 +19,22 @@ import Auth from "@/layouts/Auth.vue";
 
 // views for Admin layout
 
+//  #region SUPERADMIN
+
 import Dashboard from "@/views/superadmin/Dashboard.vue";
+
 import ManageaccountAdmin from '@/views/superadmin/manageaccount/Admin.vue'
+import ManageaccountFinancer from '@/views/superadmin/manageaccount/Financer.vue'
+import ManageaccountCustomerSupport from '@/views/superadmin/manageaccount/Customersupport.vue'
+import ManageaccountUser from '@/views/superadmin/manageaccount/User.vue'
+
+import Inventorystore from '@/views/superadmin/inventory/Store.vue'
+import InventoryItem from '@/views/superadmin/inventory/Items.vue'
+
+import Livebidding from '@/views/superadmin/livebidding/Livebidding.vue'
+import Livebiddingcontrol from '@/views/superadmin/livebidding/Livebiddingcontrol.vue'
+
+//  #endregion
 
 // views for Auth layout
 
@@ -31,17 +45,45 @@ import Register from "@/views/auth/Register.vue";
 
 const routes = [
   {
-    path: "/admin",
-    redirect: "/admin/dashboard",
+    path: "/superadmin",
+    redirect: "/superadmin/dashboard",
     component: Admin,
     children: [
       {
-        path: "/admin/dashboard",
+        path: "/superadmin/dashboard",
         component: Dashboard,
       },
       {
-        path: "/admin/manageuser/admin",
+        path: "/superadmin/manageuser/admin",
         component: ManageaccountAdmin,
+      },
+      {
+        path: "/superadmin/manageuser/financer",
+        component: ManageaccountFinancer
+      },
+      {
+        path: "/superadmin/manageuser/customersupport",
+        component: ManageaccountCustomerSupport
+      },
+      {
+        path: "/superadmin/manageuser/user",
+        component: ManageaccountUser
+      },
+      {
+        path: "/superadmin/inventory/store",
+        component: Inventorystore
+      },
+      {
+        path: "/superadmin/inventory/items",
+        component: InventoryItem
+      },
+      {
+        path: "/superadmin/livebidding",
+        component: Livebidding
+      },
+      {
+        path: "/superadmin/livebidding/controls",
+        component: Livebiddingcontrol
       },
     ],
   },

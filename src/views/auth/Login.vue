@@ -70,60 +70,92 @@ export default {
       user: {
         username: "",
         password: ""
-      }
+      },
+      loginloading: false,
+      auth: ""
     };
   },
   methods: {
-    Signin(){
+    async Signin(){
+
+      this.loginloading = true;
       
       const alphaRegex = /^[A-Za-z]+$/;
       const withSpecialCharRegex = /^[A-Za-z0-9@/[\]#]+$/;
 
       if (this.user.username == ""){
         this.$swal({
-          title: "Enter your username"
+          title: "Enter your username",
+          icon: "error",
         })
         return
       }
       else if (this.user.username.length < 5 || this.user.username.length > 15 ){
         this.$swal({
-          title: "Username must be greater than 5 and less than 15 characters"
+          title: "Username must be greater than 5 and less than 15 characters",
+          icon: "error",
         })
         return;
       }
       else if (!alphaRegex.test(this.user.username)){
         this.$swal({
-          title: "Please don't use numbers or special characters for username"
+          title: "Please don't use numbers or special characters for username",
+          icon: "error",
         })
         return;
       }
       else if (this.user.password == ""){
         this.$swal({
-          title: "Please enter password"
+          title: "Please enter password",
+          icon: "error",
         })
         return;
       }
       else if (this.user.password.length < 5 || this.user.password.length > 25 ){
         this.$swal({
-          title: "Password must be greater than 5 and less than 25 characters"
+          title: "Password must be greater than 5 and less than 25 characters",
+          icon: "error",
         })
         return;
       }
       else if (!withSpecialCharRegex.test(this.user.password)){
         this.$swal({
-          title: "Only use letters, numbers and some special characters (@/[]#) for password"
+          title: "Only use letters, numbers and some special characters (@/[]#) for password",
+          icon: "error",
         })
         return;
       }
 
-      //  API HERE
-      this.$swal({
-        title: "Welcome back!",
-        icon: "success",
-        allowOutsideClick: false
-      }).then(() => {
-        this.$router.push({path: "/admin"})
-      })
+      const response = await fetch(`http://localhost:5000/auth/login?username=${this.user.username}&password=${this.user.password}`, {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include"
+      });
+
+      const responseData = await response.json();
+
+      if (response.status === 400) {
+        //  API HERE
+        this.$swal({
+          title: responseData.data,
+          icon: "error"
+        })
+
+        return;
+      }
+      else{
+        this.$swal({
+            title: "Welcome back!",
+            icon: "success",
+            allowOutsideClick: false
+        }).then(() => {
+            this.$router.push({path: `/${responseData.data.auth}`})
+        })
+      }
+
+      
     }
   }
 };

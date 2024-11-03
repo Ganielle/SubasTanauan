@@ -4,7 +4,7 @@
       class="text-black text-xl uppercase lg:inline-block font-semibold pt-12"
       href="javascript:void(0)"
     >
-      Manage Account / Financer
+      Manage Account / Customer Support
     </a>
     <hr class="my-4 md:min-w-full" />
     <br/>
@@ -35,7 +35,7 @@
       </button>
     </div>
     <br/><br/>
-    <FinancerTable v-if="!loadingapi" :useritems="userlist" @edit-user="toggleEditUser" @delete-user="toggleDeleteUser"/>
+    <CustomersupportTable v-if="!loadingapi" :useritems="userlist" @edit-user="toggleEditUser" @delete-user="toggleDeleteUser"/>
     <center v-else>
       <i class="fas fa-solid fa-spinner" style="animation:spin 4s linear infinite;"></i>
     </center>
@@ -46,7 +46,7 @@
         <button class="modal__close" @click="toggleCreateUser()">
           <mdi-close></mdi-close>
         </button>
-        <span class="modal__title">Create Financer Account</span>
+        <span class="modal__title">Create Customer Support Account</span>
         <br/>
         <div class="modal__content">
           <p>Username:</p>
@@ -88,7 +88,7 @@
         <button class="modal__close" @click="toggleEditUser()">
           <mdi-close></mdi-close>
         </button>
-        <span class="modal__title">Edit Financer Account</span>
+        <span class="modal__title">Edit Customer Support Account</span>
         <br/>
         <div class="modal__content">
           <p>Username:</p>
@@ -124,7 +124,7 @@
 </template>
 <script>
 
-import FinancerTable from "@/components/Subastanauan/Dashboard/Superadmin/Financertable.vue";
+import CustomersupportTable from "@/components/Subastanauan/Dashboard/Superadmin/Customersupporttable.vue";
 
 export default {
   name: "manage-account-financer-page",
@@ -158,7 +158,7 @@ export default {
     }
   },
   components: {
-    FinancerTable,
+    CustomersupportTable,
   },
   methods: {
     toggleCreateUser(){
@@ -242,7 +242,7 @@ export default {
     },
     async listUsers() {
       this.loadingapi = true
-      const response = await fetch(`http://localhost:5000/users/liststaffs?authfilter=financer&fullnamefilter=${this.search}&page=${this.pagination.page}&limit=${this.pagination.limit}`, {
+      const response = await fetch(`http://localhost:5000/users/liststaffs?authfilter=customersupport&fullnamefilter=${this.search}&page=${this.pagination.page}&limit=${this.pagination.limit}`, {
         method: 'GET',
         headers: {
           "Content-Type": "application/json"

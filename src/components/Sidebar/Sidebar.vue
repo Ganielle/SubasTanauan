@@ -74,7 +74,7 @@
         <ul class="md:flex-col md:min-w-full flex flex-col list-none">
           <li class="items-center">
             <router-link
-              to="/admin/dashboard"
+              to="/superadmin/dashboard"
               v-slot="{ href, navigate, isActive }"
             >
               <a
@@ -107,7 +107,7 @@
         <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
           <li class="items-center">
             <router-link
-              to="/admin/manageuser/admin"
+              to="/superadmin/manageuser/admin"
               v-slot="{ href, navigate, isActive }"
             >
               <a
@@ -131,7 +131,7 @@
 
           <li class="items-center">
             <router-link
-              to="/admin/manageuser/financer"
+              to="/superadmin/manageuser/financer"
               v-slot="{ href, navigate, isActive }"
             >
               <a
@@ -155,7 +155,7 @@
 
           <li class="items-center">
             <router-link
-              to="/admin/manageuser/customersupport"
+              to="/superadmin/manageuser/customersupport"
               v-slot="{ href, navigate, isActive }"
             >
               <a
@@ -179,7 +179,7 @@
 
           <li class="items-center">
             <router-link
-              to="/admin/manageuser/user"
+              to="/superadmin/manageuser/user"
               v-slot="{ href, navigate, isActive }"
             >
               <a
@@ -212,7 +212,7 @@
         <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
           <li class="items-center">
             <router-link
-              to="/admin/inventory/store"
+              to="/superadmin/inventory/store"
               v-slot="{ href, navigate, isActive }"
             >
               <a
@@ -236,7 +236,7 @@
 
           <li class="items-center">
             <router-link
-              to="/admin/inventory/items"
+              to="/superadmin/inventory/items"
               v-slot="{ href, navigate, isActive }"
             >
               <a
@@ -264,7 +264,7 @@
         <ul class="md:flex-col md:min-w-full flex flex-col list-none">
           <li class="items-center">
             <router-link
-              to="/admin/livebidding"
+              to="/superadmin/livebidding"
               v-slot="{ href, navigate, isActive }"
             >
               <a
@@ -288,7 +288,7 @@
 
           <li class="items-center">
             <router-link
-              to="/admin/payments"
+              to="/superadmin/payments"
               v-slot="{ href, navigate, isActive }"
             >
               <a
@@ -312,7 +312,7 @@
 
           <li class="items-center">
             <router-link
-              to="/admin/loans"
+              to="/superadmin/loans"
               v-slot="{ href, navigate, isActive }"
             >
               <a
