@@ -45,14 +45,15 @@
                 <button
                   class="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                   type="button"
-                  @click="Signin()"
+                  @click="Signin()" :disabled="loginloading"
                 >
-                  Sign In
+                <i v-if="loginloading" class="fas fa-solid fa-spinner" style="animation:spin 4s linear infinite;"></i>
+                <p v-else>Sign In</p>
                 </button>
               </div>
               
               <div class="text-center mt-6 relative">
-                <router-link to="/register">
+                <router-link to="/register" @click.native.prevent="loginloading ? null : $router.push('/register')">
                     <small>Create new account</small>
                   </router-link>
               </div>
@@ -88,6 +89,7 @@ export default {
           title: "Enter your username",
           icon: "error",
         })
+        this.loginloading = false;
         return
       }
       else if (this.user.username.length < 5 || this.user.username.length > 15 ){
@@ -95,6 +97,7 @@ export default {
           title: "Username must be greater than 5 and less than 15 characters",
           icon: "error",
         })
+        this.loginloading = false;
         return;
       }
       else if (!alphaRegex.test(this.user.username)){
@@ -102,6 +105,7 @@ export default {
           title: "Please don't use numbers or special characters for username",
           icon: "error",
         })
+        this.loginloading = false;
         return;
       }
       else if (this.user.password == ""){
@@ -109,6 +113,7 @@ export default {
           title: "Please enter password",
           icon: "error",
         })
+        this.loginloading = false;
         return;
       }
       else if (this.user.password.length < 5 || this.user.password.length > 25 ){
@@ -116,6 +121,7 @@ export default {
           title: "Password must be greater than 5 and less than 25 characters",
           icon: "error",
         })
+        this.loginloading = false;
         return;
       }
       else if (!withSpecialCharRegex.test(this.user.password)){
@@ -123,6 +129,7 @@ export default {
           title: "Only use letters, numbers and some special characters (@/[]#) for password",
           icon: "error",
         })
+        this.loginloading = false;
         return;
       }
 
@@ -142,7 +149,7 @@ export default {
           title: responseData.data,
           icon: "error"
         })
-
+        this.loginloading = false;
         return;
       }
       else{
@@ -154,8 +161,6 @@ export default {
             this.$router.push({path: `/${responseData.data.auth}`})
         })
       }
-
-      
     }
   }
 };
