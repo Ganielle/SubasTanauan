@@ -9,7 +9,8 @@
             {{ statSubtitle }}
           </h5>
           <span class="font-semibold text-xl text-blueGray-700">
-            {{ statTitle }}
+            <i v-if="loading" class="fas fa-solid fa-spinner" style="animation:spin 4s linear infinite;"></i>
+            <p v-else>{{ statTitle }}</p>
           </span>
         </div>
         <div class="relative w-auto pl-4 flex-initial">
@@ -39,6 +40,10 @@
 export default {
   name: "card-stats",
   props: {
+    loading: {
+      type: Boolean,
+      default: false
+    },
     subStatsHidden: {
       type: Boolean,
       default: true

@@ -20,18 +20,18 @@
         </div>
         <br/>
         <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
-            <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+            <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" :disabled="requestloading || paginationrequest.page <= 0" @click="nextPageRequest()">
                 <i class="fas fa-chevron-left"></i>
             </button>
 
-            <p style="font-size: 1.4rem; font-weight: bold;">1</p>
+            <p style="font-size: 1.4rem; font-weight: bold;">{{ paginationrequest.page + 1 }} / {{ paginationrequest.totalpage }}</p>
 
-            <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+            <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" :disabled="requestloading || paginationrequest.page >= paginationrequest.totalpage - 1" @click="previousePageRequest()">
                 <i class="fas fa-chevron-right"></i>
             </button>
         </div>
         <br/><br/>
-        <Storerequesttable @approve-store="toggleApproveStore()" @denied-store="toggleDeniedStore()"/>
+        <Storerequesttable :storeitems="requestlist" @approve-store="toggleApproveStore()" @denied-store="toggleDeniedStore()"/>
         <br/>
         <hr class="my-4 md:min-w-full" />
         <br/>
@@ -70,7 +70,18 @@ export default {
     name: "inventory-store-page",
     components: {
         Storerequesttable,
-        Storelisttable
+        Storelisttable,
+    },
+    data() {
+        return {
+            paginationrequest: {
+                page: 0,
+                totalpage: 1
+            },
+            requestlist: [],
+            requestloading: false,
+            requestsearch: ""
+        }
     },
     methods: {
         toggleApproveStore(){
@@ -108,7 +119,50 @@ export default {
             }).then(() => {
 
             })
-        }
+        },
+        async RequestList(){
+            this.requestloading = true
+
+            const response = await fetch(`${process.env.VUE_APP_API_URL}/store/storelist?storenamefilter=${this.requestsearch}&statusfilter=Pending&page=${this.paginationrequest.page}&limit=10`, {
+                method: 'GET',
+                headers: {
+                "Content-Type": "application/json"
+                },
+                credentials: "include"
+            });
+
+            const responseData = await response.json();
+
+            if (response.status === 400) {
+                //  API HERE
+                this.$swal({
+                title: responseData.data,
+                icon: "error"
+                })
+
+                this.loadingapi = false
+                return;
+            }
+
+            this.paginationrequest.totalpage = responseData.data.totalpages <= 0 ? 1 : responseData.data.totalpages
+            this.requestlist = responseData.data.list
+
+            this.requestloading = false
+        },
+        nextPageRequest(){
+            this.paginationrequest.page++
+            this.RequestList()
+        },
+        previousePageRequest(){
+            this.paginationrequest.page--;
+            this.RequestList()
+        },
+        // approvestore(storedata){
+
+        // }
+    },
+    mounted() {
+        this.RequestList()
     }
 }
 </script>

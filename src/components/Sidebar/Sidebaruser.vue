@@ -16,7 +16,7 @@
       <!-- Brand -->
       <router-link
         class="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
-        to="/"
+        to="/user/dashboard"
       >
         Subas Tanauan
       </router-link>
@@ -33,7 +33,7 @@
             <div class="w-6/12">
               <router-link
                 class="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
-                to="/"
+                to="/user/dashboard"
               >
                 Subas Tanauan
               </router-link>
@@ -49,13 +49,12 @@
             </div>
           </div>
         </div>
-
         <!--#region FIRST NAVIGATION -->
         <hr class="my-4 md:min-w-full" />
         <ul class="md:flex-col md:min-w-full flex flex-col list-none">
           <li class="items-center">
             <router-link
-              to="/superadmin/dashboard"
+              to="/user/dashboard"
               v-slot="{ href, navigate, isActive }"
             >
               <a
@@ -78,17 +77,11 @@
           </li>
         </ul>
 
-        <!--#region SECOND NAVIGATION (MANAGE ACCOUNTS) -->
-        <hr class="my-4 md:min-w-full" />
-        <h6
-          class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
-        >
-          Manage Accounts
-        </h6>
-        <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
+        <!--#region SECOND NAVIGATION (MARKETPLACE) -->
+        <ul class="md:flex-col md:min-w-full flex flex-col list-none">
           <li class="items-center">
             <router-link
-              to="/superadmin/manageuser/admin"
+              to="/user/marketplace"
               v-slot="{ href, navigate, isActive }"
             >
               <a
@@ -102,98 +95,20 @@
                 ]"
               >
                 <i
-                  class="fas fa-user-secret mr-2 text-sm"
+                  class="fas fa-store mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                 ></i>
-                Admin
-              </a>
-            </router-link>
-          </li>
-
-          <li class="items-center">
-            <router-link
-              to="/superadmin/manageuser/financer"
-              v-slot="{ href, navigate, isActive }"
-            >
-              <a
-                :href="href"
-                @click="navigate"
-                class="text-xs uppercase py-3 font-bold block"
-                :class="[
-                  isActive
-                    ? 'text-emerald-500 hover:text-emerald-600'
-                    : 'text-blueGray-700 hover:text-blueGray-500',
-                ]"
-              >
-                <i
-                  class="fas fa-user-tie mr-2 text-sm"
-                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
-                ></i>
-                Financer
-              </a>
-            </router-link>
-          </li>
-
-          <li class="items-center">
-            <router-link
-              to="/superadmin/manageuser/customersupport"
-              v-slot="{ href, navigate, isActive }"
-            >
-              <a
-                :href="href"
-                @click="navigate"
-                class="text-xs uppercase py-3 font-bold block"
-                :class="[
-                  isActive
-                    ? 'text-emerald-500 hover:text-emerald-600'
-                    : 'text-blueGray-700 hover:text-blueGray-500',
-                ]"
-              >
-                <i
-                  class="fas fa-ticket mr-2 text-sm"
-                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
-                ></i>
-                Customer Support
-              </a>
-            </router-link>
-          </li>
-
-          <li class="items-center">
-            <router-link
-              to="/superadmin/manageuser/user"
-              v-slot="{ href, navigate, isActive }"
-            >
-              <a
-                :href="href"
-                @click="navigate"
-                class="text-xs uppercase py-3 font-bold block"
-                :class="[
-                  isActive
-                    ? 'text-emerald-500 hover:text-emerald-600'
-                    : 'text-blueGray-700 hover:text-blueGray-500',
-                ]"
-              >
-                <i
-                  class="fas fa-user mr-2 text-sm"
-                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
-                ></i>
-                User
+                Marketplace
               </a>
             </router-link>
           </li>
         </ul>
 
-        <!--#region THIRD NAVIGATION (INVENTORY)-->
-        <hr class="my-4 md:min-w-full" />
-        <h6
-          class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
-        >
-          Inventory
-        </h6>
-        <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
+        <!--#region SECOND ONE POINT ONE NAVIGATION (MARKETPLACE) -->
+        <ul class="md:flex-col md:min-w-full flex flex-col list-none">
           <li class="items-center">
             <router-link
-              to="/superadmin/inventory/store"
+              to="/user/store"
               v-slot="{ href, navigate, isActive }"
             >
               <a
@@ -207,45 +122,20 @@
                 ]"
               >
                 <i
-                  class="fas fa-store  mr-2 text-sm"
+                  class="fas fa-store mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                 ></i>
                 Store
               </a>
             </router-link>
           </li>
-
-          <li class="items-center">
-            <router-link
-              to="/superadmin/inventory/items"
-              v-slot="{ href, navigate, isActive }"
-            >
-              <a
-                :href="href"
-                @click="navigate"
-                class="text-xs uppercase py-3 font-bold block"
-                :class="[
-                  isActive
-                    ? 'text-emerald-500 hover:text-emerald-600'
-                    : 'text-blueGray-700 hover:text-blueGray-500',
-                ]"
-              >
-                <i
-                  class="fas fa-boxes-stacked mr-2 text-sm"
-                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
-                ></i>
-                Items
-              </a>
-            </router-link>
-          </li>
         </ul>
 
-        <!--#region FOURTH NAVIGATION-->
-        <hr class="my-4 md:min-w-full" />
+        <!--#region THIRD NAVIGATION (Live Bidding)-->
         <ul class="md:flex-col md:min-w-full flex flex-col list-none">
           <li class="items-center">
             <router-link
-              to="/superadmin/livebidding"
+              to="/user/livebidding"
               v-slot="{ href, navigate, isActive }"
             >
               <a
@@ -266,10 +156,13 @@
               </a>
             </router-link>
           </li>
+        </ul>
 
+        <!--#region FOURTH NAVIGATION (LOAD)-->
+        <ul class="md:flex-col md:min-w-full flex flex-col list-none">
           <li class="items-center">
             <router-link
-              to="/superadmin/payments"
+              to="/user/load"
               v-slot="{ href, navigate, isActive }"
             >
               <a
@@ -286,14 +179,17 @@
                   class="fas fa-money-bill mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                 ></i>
-                LOAD
+                Load
               </a>
             </router-link>
           </li>
+        </ul>
 
+        <!--#region FIFTH NAVIGATION (LOAN)-->
+        <ul class="md:flex-col md:min-w-full flex flex-col list-none">
           <li class="items-center">
             <router-link
-              to="/superadmin/loans"
+              to="/user/loan"
               v-slot="{ href, navigate, isActive }"
             >
               <a
@@ -310,13 +206,14 @@
                   class="fas fa-landmark mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                 ></i>
-                Loans
+                Loan
               </a>
             </router-link>
           </li>
         </ul>
 
       </div>
+
       <button
         class="bg-emerald-500 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-2 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
         type="button"

@@ -113,6 +113,13 @@
           class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0"
         >
           <div class="flex-auto px-4 lg:px-10 py-10 pt-5">
+            <button
+              class="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-1 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+              type="button"
+              @click="GoBack()"
+            >
+              Go Back
+            </button>
             <div class="text-blueGray-400 text-center mb-3 font-bold">
               <p style="font-size: 1.3rem;">Sign up</p>
             </div>
@@ -129,10 +136,10 @@
                   class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   v-model="user.pricerange"
                 >
-                <option value="">Please select your price range</option>
-                <option>₱5,000 - ₱10,000</option>
-                <option>₱15,000 - ₱30,000</option>
-                <option>₱50,000 - ₱100,000</option>
+                  <option value="">Please select your price range</option>
+                  <option value="10000">₱5,000 - ₱10,000</option>
+                  <option value="30000">₱15,000 - ₱30,000</option>
+                  <option value="100000">₱50,000 - ₱100,000</option>
                 </select>
               </div>
 
@@ -142,7 +149,7 @@
                   class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                   htmlFor="grid-password"
                 >
-                  Price Range
+                  Preferred Livestock
                 </label>
                 <select
                   type="text"
@@ -161,13 +168,15 @@
                   class="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                   type="button"
                   @click="FinishSignup()"
+                  :disabled="registerloading"
                 >
-                  Finish Sign up
+                  <i v-if="registerloading" class="fas fa-solid fa-spinner" style="animation:spin 4s linear infinite;"></i>
+                  <p v-else>Finish Sign up</p>
                 </button>
               </div>
 
               <div class="text-center mt-6">
-                <router-link to="/">
+                <router-link to="/"  @click.native.prevent="registerloading ? null : $router.push('/')">
                     <small>Do you have an account? Login here</small>
                   </router-link>
               </div>
@@ -184,6 +193,7 @@ export default {
   data() {
     return {
       step: 0,
+      registerloading: false,
       user: {
         username: "",
         password: "",
@@ -265,30 +275,59 @@ export default {
 
       this.step++;
     },
-    FinishSignup(){
+    async FinishSignup(){
+      this.registerloading = true
       if (this.user.pricerange == ""){
         this.$swal({
           title: "Please select your price range"
         })
+        this.registerloading = false
         return
       }
       else if (this.user.livestock == ""){
         this.$swal({
           title: "Please select your preferred livestock"
         })
+        this.registerloading = false
         return
       }
 
+      const response = await fetch(`${process.env.VUE_APP_API_URL}/users/createuser`, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify(this.user)
+      });
+
+      const responseData = await response.json();
+
+      if (response.status === 400) {
+        //  API HERE
+        this.$swal({
+          title: responseData.data,
+          icon: "error"
+        })
+        this.registerloading = false
+        return;
+      }
       //  ADD API HERE
       this.$swal({
         title: "Your account has successfully registered",
         icon: "success",
         allowOutsideClick: false
-      }).then(() => {
-        this.$router.push({path: "/"})
+      }).then((data) => {
+        if (data.isConfirmed){
+          this.registerloading = false
+          this.$router.push({path: "/"})
+        }
       })
-
-
+    },
+    GoBack(){
+      this.step--
+      this.user.pricerange = ""
+      this.user.livestock = ""
     }
   }
 };

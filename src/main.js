@@ -12,12 +12,17 @@ import "@/assets/styles/tailwind.css";
 
 import App from "@/App.vue";
 import { vfmPlugin } from 'vue-final-modal'
-// layouts
 
-import Admin from "@/layouts/Admin.vue";
+// #region LAYOUTS
+
+import Login from "@/views/auth/Login.vue";
+import Register from "@/views/auth/Register.vue";
 import Auth from "@/layouts/Auth.vue";
 
-// views for Admin layout
+import Admin from "@/layouts/Admin.vue";
+import User from '@/layouts/User.vue'
+
+//  #endregion
 
 //  #region SUPERADMIN
 
@@ -36,12 +41,13 @@ import Livebiddingcontrol from '@/views/superadmin/livebidding/Livebiddingcontro
 
 //  #endregion
 
-// views for Auth layout
+//  #region USER
 
-import Login from "@/views/auth/Login.vue";
-import Register from "@/views/auth/Register.vue";
+import Userdashboard from '@/views/user/Dashboard.vue'
+import Usermarketplace from '@/views/user/marketplace.vue'
+import Userstore from '@/views/user/Store.vue'
 
-// routes
+//  #endregion
 
 const routes = [
   {
@@ -86,6 +92,25 @@ const routes = [
         component: Livebiddingcontrol
       },
     ],
+  },
+  {
+    path: "/user",
+    redirect: "/user/dashboard",
+    component: User,
+    children: [
+      {
+        path: "/user/dashboard",
+        component: Userdashboard,
+      },
+      {
+        path: "/user/marketplace",
+        component: Usermarketplace
+      },
+      {
+        path: "/user/store",
+        component: Userstore
+      }
+    ]
   },
   {
     path: "/",
