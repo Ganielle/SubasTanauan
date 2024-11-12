@@ -11,9 +11,9 @@
 
         <div>
             <div class="mb-3 pt-0" style="display: flex; gap: 10px;">
-                <input type="text" placeholder="Search Store Request" class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline"/>
+                <input type="text" placeholder="Search Store Request" class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline" @input="searchStoreRequest" v-model="requestsearch"/>
                 
-                <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+                <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button"  @click="clearSearchRequest()" :disabled="loadingapi">
                 Clear Search
                 </button>
             </div>
@@ -31,7 +31,7 @@
             </button>
         </div>
         <br/><br/>
-        <Storerequesttable :storeitems="requestlist" @approve-store="toggleApproveStore()" @denied-store="toggleDeniedStore()"/>
+        <Storerequesttable :storeitems="requestlist" @approve-store="toggleApproveStore" @denied-store="toggleDeniedStore"/>
         <br/>
         <hr class="my-4 md:min-w-full" />
         <br/>
@@ -80,33 +80,48 @@ export default {
             },
             requestlist: [],
             requestloading: false,
-            requestsearch: ""
+            requestsearch: "",
+            storeid: ""
         }
     },
     methods: {
-        toggleApproveStore(){
-            this.$swal({
-                title: "Are you sure you want to approve this store?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, approve it!"
-            }).then(() => {
+        toggleApproveStore(storedata){
+            if (this.requestloading){
+                return;
+            }
 
-            })
+            if (storedata){
+                this.storeid = storedata
+                this.$swal({
+                    title: "Are you sure you want to approve this store?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, approve it!"
+                }).then(() => {
+                    this.approvedeniedStore("Approved")
+                })
+            }
         },
-        toggleDeniedStore(){
-            this.$swal({
-                title: "Are you sure you want to denied this store?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, denied it!"
-            }).then(() => {
+        toggleDeniedStore(storedata){
+            if (this.requestloading){
+                return;
+            }
 
-            })
+            if (storedata){
+                this.storeid = storedata
+                this.$swal({
+                    title: "Are you sure you want to denied this store?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, denied it!"
+                }).then(() => {
+                    this.approvedeniedStore("Denied")
+                })
+            }
         },
         toggleDeleteStore(){
             this.$swal({
@@ -144,7 +159,15 @@ export default {
                 return;
             }
 
+
             this.paginationrequest.totalpage = responseData.data.totalpages <= 0 ? 1 : responseData.data.totalpages
+            
+            if (this.paginationrequest.totalpage - 1 < this.paginationrequest.page){
+                this.pagination.page -= 1
+                this.RequestList();
+                return;
+            }
+
             this.requestlist = responseData.data.list
 
             this.requestloading = false
@@ -157,9 +180,67 @@ export default {
             this.paginationrequest.page--;
             this.RequestList()
         },
-        // approvestore(storedata){
+        searchStoreRequest(){
+            if (this.requestloading){
+                return
+            }
 
-        // }
+            clearTimeout(this.debounceTimeout);
+            this.debounceTimeout = setTimeout(() => {
+                this.paginationrequest.page = 0
+                this.RequestList();
+            }, 500);
+        },
+        clearSearchRequest(){
+            if (this.requestloading){
+                return
+            }
+            this.paginationrequest.page = 0
+            this.requestsearch = ""
+
+            this.RequestList()
+        },
+        async approvedeniedStore(isApproved){
+            if (this.storeid == ""){
+                return;
+            }
+
+            this.requestloading = true
+
+            const response = await fetch(`${process.env.VUE_APP_API_URL}/store/approvedeclinestore`, {
+                method: 'POST',
+                headers: {
+                "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify({
+                    storeid: this.storeid,
+                    status: isApproved
+                })
+            });
+
+            const responseData = await response.json();
+
+            if (response.status === 400) {
+                //  API HERE
+                this.$swal({
+                title: responseData.data,
+                icon: "error"
+                })
+
+                this.loadingapi = false
+                return;
+            }
+
+            this.$swal({
+                title: "Admin successfully deleted",
+                icon: "success",
+                allowOutsideClick: false
+            }).then(() => {
+                this.selecteduserid = ""
+                this.RequestList()
+            })
+        }
     },
     mounted() {
         this.RequestList()
