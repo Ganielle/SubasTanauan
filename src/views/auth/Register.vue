@@ -163,6 +163,17 @@
                 </select>
               </div>
 
+              <div class="relative w-full mb-3">
+                <label
+                  class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                  htmlFor="grid-password"
+                >
+                  Valid ID (Driver's License / UMID / Philid / PhilHealth ID / Postal ID):
+                </label>
+                <img :src="user.previewImage" class="uploading-image" />
+                <input type="file" accept="image/jpeg" @change=uploadImage>
+              </div>
+
               <div class="text-center mt-6">
                 <button
                   class="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
@@ -201,11 +212,24 @@ export default {
         firstname: "",
         lastname: "",
         pricerange: "",
-        livestock: ""
+        livestock: "",
+        previewImage: null,
+        file: null
       }
     };
   },
   methods: {
+    uploadImage(e) {
+      const image = e.target.files[0];
+      if (image) {
+        this.user.file = image; // Store the file object directly
+        const reader = new FileReader();
+        reader.readAsDataURL(image);
+        reader.onload = e => {
+          this.user.previewImage = e.target.result; // Base64 string for preview
+        };
+      }
+    },
     NextStep(){
 
       const alphaRegex = /^[A-Za-z]+$/;
@@ -292,13 +316,27 @@ export default {
         return
       }
 
+      const formData = new FormData()
+
+      formData.append("username", this.user.username)
+      formData.append("password", this.user.password)
+      formData.append("email", this.user.email)
+      formData.append("firstname", this.user.firstname)
+      formData.append("lastname", this.user.lastname)
+      formData.append("pricerange", this.user.pricerange)
+      formData.append("livestock", this.user.livestock)
+
+      if (this.user.file) {
+        formData.append("file", this.user.file);
+      }
+
       const response = await fetch(`${process.env.VUE_APP_API_URL}/users/createuser`, {
         method: 'POST',
         headers: {
-          "Content-Type": "application/json"
+          'Accept': 'application/json',
         },
         credentials: "include",
-        body: JSON.stringify(this.user)
+        body: formData
       });
 
       const responseData = await response.json();

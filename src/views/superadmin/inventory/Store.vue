@@ -74,6 +74,7 @@ export default {
     },
     data() {
         return {
+            //  #region STORE REQUEST
             paginationrequest: {
                 page: 0,
                 totalpage: 1
@@ -81,10 +82,23 @@ export default {
             requestlist: [],
             requestloading: false,
             requestsearch: "",
+            //  #endregion
+
+            //  #region STORE LIST
+            paginationlist: {
+                page: 0,
+                totalpage: 1
+            },
+            listloading: false,
+            storelist: [],
+            storesearch: "",
+            //  #endregion
+
             storeid: ""
         }
     },
     methods: {
+        //  #region STORE REQUEST
         toggleApproveStore(storedata){
             if (this.requestloading){
                 return;
@@ -240,7 +254,16 @@ export default {
                 this.selecteduserid = ""
                 this.RequestList()
             })
+        },
+        //  #endregion
+
+        //  #region STORE LIST
+
+        async StoreList(){
+            
         }
+
+        //  #endregion
     },
     mounted() {
         this.RequestList()
