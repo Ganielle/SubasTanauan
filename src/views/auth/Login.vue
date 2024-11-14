@@ -249,15 +249,26 @@ export default {
       else{
         this.userauth = responseData.data.auth
 
-        if (!responseData.data.emailverified){
-          this.verification = "false"
-          this.loginloading = false;
-          this.generateCode()
+        if (responseData.data.auth != "superadmin"){
+          if (!responseData.data.emailverified){
+            this.verification = "false"
+            this.loginloading = false;
+            this.generateCode()
+          }
+          else{
+            this.verification = "true"
+            this.loginloading = false;
+            this.generateOTPCode()
+          }
         }
         else{
-          this.verification = "true"
-          this.loginloading = false;
-          this.generateOTPCode()
+          this.$swal({
+              title: "Welcome back!",
+              icon: "success",
+              allowOutsideClick: false
+            }).then(() => {
+              this.$router.push({path: `/${this.userauth}`})
+          })
         }
       }
     },

@@ -57,7 +57,7 @@
             </button>
         </div>
         <br/><br/>
-        <Storelisttable  @delete-store="toggleDeleteStore()"/> <!--@edit-store="toggleApproveStore()"-->
+        <Storelisttable :storeitems="storelist" /> <!--@view-store-details=""-->
         <br/><br/>
         <br/><br/>
     </div>
@@ -82,6 +82,7 @@ export default {
             requestlist: [],
             requestloading: false,
             requestsearch: "",
+            debounceTimeoutRequest: null,
             //  #endregion
 
             //  #region STORE LIST
@@ -92,6 +93,7 @@ export default {
             listloading: false,
             storelist: [],
             storesearch: "",
+            debounceTimeoutList: null,
             //  #endregion
 
             storeid: ""
@@ -199,8 +201,8 @@ export default {
                 return
             }
 
-            clearTimeout(this.debounceTimeout);
-            this.debounceTimeout = setTimeout(() => {
+            clearTimeout(this.debounceTimeoutRequest);
+            this.debounceTimeoutRequest = setTimeout(() => {
                 this.paginationrequest.page = 0
                 this.RequestList();
             }, 500);
@@ -258,15 +260,76 @@ export default {
         //  #endregion
 
         //  #region STORE LIST
-
         async StoreList(){
-            
-        }
+            this.listloading = true
 
+            const response = await fetch(`${process.env.VUE_APP_API_URL}/store/storelist?storenamefilter=${this.storesearch}&statusfilter=Approved&page=${this.paginationlist.page}&limit=10`, {
+                method: 'GET',
+                headers: {
+                "Content-Type": "application/json"
+                },
+                credentials: "include"
+            });
+
+            const responseData = await response.json();
+
+            if (response.status === 400) {
+                //  API HERE
+                this.$swal({
+                title: responseData.data,
+                icon: "error"
+                })
+
+                this.loadingapi = false
+                return;
+            }
+
+
+            this.paginationrequest.totalpage = responseData.data.totalpages <= 0 ? 1 : responseData.data.totalpages
+            
+            if (this.paginationrequest.totalpage - 1 < this.paginationrequest.page){
+                this.pagination.page -= 1
+                this.RequestList();
+                return;
+            }
+
+            this.storelist = responseData.data.list
+
+            this.listloading = false
+        },
+        searchStoreList(){
+            if (this.listloading){
+                return
+            }
+
+            clearTimeout(this.debounceTimeoutList);
+            this.debounceTimeoutList = setTimeout(() => {
+                this.paginationlist.page = 0
+                this.StoreList();
+            }, 500);
+        },
+        clearSearchList(){
+            if (this.listloading){
+                return
+            }
+            this.paginationlist.page = 0
+            this.storesearch = ""
+
+            this.RequestList()
+        },
+        nextPageList(){
+            this.paginationlist.page++
+            this.StoreList()
+        },
+        previousePageList(){
+            this.paginationlist.page--;
+            this.StoreList()
+        },
         //  #endregion
     },
     mounted() {
         this.RequestList()
+        this.StoreList()
     }
 }
 </script>
