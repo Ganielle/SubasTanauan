@@ -60,6 +60,45 @@
         <Storelisttable :storeitems="storelist" /> <!--@view-store-details=""-->
         <br/><br/>
         <br/><br/>
+
+        <!--#region EDIT ACCOUNT-->
+        <div>
+            <vue-final-modal v-model="detailsModal" classes="modal-container" content-class="modal-content">
+                <button class="modal__close" @click="toggleEditUser()">
+                <mdi-close></mdi-close>
+                </button>
+                <span class="modal__title">Edit Admin Account</span>
+                <br/>
+                <div class="modal__content">
+                <p>Username:</p>
+                <input type="text" placeholder="Enter username" class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-full" v-model="editUserdetails.username"/>
+                <br/>
+                <p>Password:</p>
+                <input type="password" placeholder="Enter password" class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-full" v-model="editUserdetails.password"/>
+                <br/>
+                <p>First Name:</p>
+                <input type="text" placeholder="Enter first name" class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-full" v-model="editUserdetails.firstname"/>
+                <br/>
+                <p>Last Name:</p>
+                <input type="text" placeholder="Enter last name" class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-full" v-model="editUserdetails.lastname"/>
+                <br/><br/>
+                </div>
+                <div class="modal__action">
+                <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" @click="toggleEditUser()" :disabled="loadingapi">
+                    <center v-if="loadingapi">
+                    <i class="fas fa-solid fa-spinner" style="animation:spin 4s linear infinite;"></i>
+                    </center>
+                    <p v-else>Cancel</p>
+                </button>
+                <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" @click="editUser()" :disabled="loadingapi">
+                    <center v-if="loadingapi">
+                    <i class="fas fa-solid fa-spinner" style="animation:spin 4s linear infinite;"></i>
+                    </center>
+                    <p v-else>Edit</p>
+                </button>
+                </div>
+            </vue-final-modal>
+        </div>
     </div>
 </template>
 
@@ -94,6 +133,24 @@ export default {
             storelist: [],
             storesearch: "",
             debounceTimeoutList: null,
+            //  #endregion
+
+            //  #region MODAL
+
+            detailsModal: false,
+            detailsLoading: false,
+            detailsid: "",
+            detailsdata: {
+                storename: "",
+                ownername: "",
+                ownercontactnumber: "",
+                address: "",
+                verifiedemail: "",
+                verifiedbyid: "", 
+                storecontactnumber: "",
+                owneremail: ""
+            },
+
             //  #endregion
 
             storeid: ""
@@ -325,6 +382,50 @@ export default {
             this.paginationlist.page--;
             this.StoreList()
         },
+        //  #endregion
+
+        //  #region STORE DETAILS
+
+        toggleStoreDetails(storedata){
+            if (this.detailsLoading){
+                return;
+            }
+
+            if (storedata){
+                this.detailsid = storedata
+                this.getStoreDetails()
+            }
+
+            this.detailsModal = !this.detailsModal
+        },
+        async getStoreDetails(){
+            this.detailsLoading = true
+
+            const response = await fetch(`${process.env.VUE_APP_API_URL}/store/getstoredetails?storeid=${this.detailsid}`, {
+                method: 'GET',
+                headers: {
+                "Content-Type": "application/json"
+                },
+                credentials: "include"
+            });
+
+            const responseData = await response.json();
+
+            if (response.status === 400) {
+                //  API HERE
+                this.$swal({
+                title: responseData.data,
+                icon: "error"
+                })
+
+                this.detailsLoading = false
+                return;
+            }
+
+            this.detailsdata = responseData.data
+            this.detailsLoading = false
+        }
+
         //  #endregion
     },
     mounted() {
