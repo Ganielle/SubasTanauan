@@ -31,7 +31,7 @@
             </button>
         </div>
         <br/><br/>
-        <Storerequesttable :storeitems="requestlist" @approve-store="toggleApproveStore" @denied-store="toggleDeniedStore"/>
+        <Storerequesttable :storeitems="requestlist" @approve-store="toggleApproveStore" @denied-store="toggleDeniedStore" @view-store-details="toggleStoreDetails"/>
         <br/>
         <hr class="my-4 md:min-w-full" />
         <br/>
@@ -57,45 +57,88 @@
             </button>
         </div>
         <br/><br/>
-        <Storelisttable :storeitems="storelist" /> <!--@view-store-details=""-->
+        <Storelisttable :storeitems="storelist" @view-store-details="toggleStoreDetails"/> <!---->
         <br/><br/>
         <br/><br/>
 
         <!--#region EDIT ACCOUNT-->
         <div>
             <vue-final-modal v-model="detailsModal" classes="modal-container" content-class="modal-content">
-                <button class="modal__close" @click="toggleEditUser()">
+                <button class="modal__close" @click="toggleStoreDetails()">
                 <mdi-close></mdi-close>
                 </button>
-                <span class="modal__title">Edit Admin Account</span>
+                <span class="modal__title">Store Details</span>
                 <br/>
-                <div class="modal__content">
-                <p>Username:</p>
-                <input type="text" placeholder="Enter username" class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-full" v-model="editUserdetails.username"/>
-                <br/>
-                <p>Password:</p>
-                <input type="password" placeholder="Enter password" class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-full" v-model="editUserdetails.password"/>
-                <br/>
-                <p>First Name:</p>
-                <input type="text" placeholder="Enter first name" class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-full" v-model="editUserdetails.firstname"/>
-                <br/>
-                <p>Last Name:</p>
-                <input type="text" placeholder="Enter last name" class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-full" v-model="editUserdetails.lastname"/>
-                <br/><br/>
+                <div class="modal__content" >
+                    <div style="height: 100%; width: 100%; background-color:gainsboro; border-radius: 5px;">
+                        <div style="margin: 10px;">
+                            <p style="font-size: 2rem; text-transform: uppercase;">{{ detailsdata[0].storename }}</p>
+                            <div class="container px-6 mx-auto">
+                                <div class="flex flex-wrap">
+                                    <div class="w-full px-6 flex-1">
+                                        <p style="font-size: 1.2rem;">Address:</p>
+                                        <p style="font-size: 1.2rem;">{{ detailsdata[0].storeaddress }}</p>
+                                    </div>
+                                    <div class="w-full px-6 flex-1">
+                                        <p style="font-size: 1.2rem;">Contact Number:</p>
+                                        <p style="font-size: 1.2rem;">{{ detailsdata[0].storecontactnumber }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="container px-6 mx-auto">
+                                <div class="flex flex-wrap">
+                                    <div class="w-full px-6 flex-1">
+                                        <p style="font-size: 1.2rem;">Owner:</p>
+                                        <p style="font-size: 1.2rem;">{{ detailsdata[0].ownername }}</p>
+                                    </div>
+                                    <div class="w-full px-6 flex-1">
+                                        <p style="font-size: 1.2rem;">Email:</p>
+                                        <p style="font-size: 1.2rem;">{{ detailsdata[0].owneremail }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="container px-6">
+                                <div class="flex flex-wrap">
+                                    <div class="w-full px-6 flex-1">
+                                        <p style="font-size: 1.2rem;">Verified Email: {{ detailsdata[0].verifiedemail ? 'Verified' : 'Not verified' }}</p>
+                                    </div>
+                                    <div class="w-full px-6 flex-1">
+                                        <p style="font-size: 1.2rem;">Verified ID: {{ detailsdata[0].verifiedbyid }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <GMapMap
+                        :center="{ lat: Number(detailsdata[0].lat), lng: Number(detailsdata[0].lang) }"
+                        :zoom="15" 
+                        map-type-id="terrain" 
+                        style="width: 100%; height: 20rem"
+                        :options="{
+                            zoomControl: true,
+                            mapTypeControl: true,
+                            scaleControl: true,
+                            streetViewControl: true,
+                            rotateControl: true,
+                            fullscreenControl: true
+                        }"
+                    >
+                        <GMapMarker
+                            :position="storeposition"
+                        />
+                    </GMapMap>
+                    <br/>
                 </div>
                 <div class="modal__action">
-                <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" @click="toggleEditUser()" :disabled="loadingapi">
-                    <center v-if="loadingapi">
-                    <i class="fas fa-solid fa-spinner" style="animation:spin 4s linear infinite;"></i>
-                    </center>
-                    <p v-else>Cancel</p>
-                </button>
-                <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" @click="editUser()" :disabled="loadingapi">
-                    <center v-if="loadingapi">
-                    <i class="fas fa-solid fa-spinner" style="animation:spin 4s linear infinite;"></i>
-                    </center>
-                    <p v-else>Edit</p>
-                </button>
+                    <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" @click="toggleStoreDetails()" :disabled="loadingapi">
+                        <center v-if="loadingapi">
+                        <i class="fas fa-solid fa-spinner" style="animation:spin 4s linear infinite;"></i>
+                        </center>
+                        <p v-else>Close</p>
+                    </button>
                 </div>
             </vue-final-modal>
         </div>
@@ -140,15 +183,23 @@ export default {
             detailsModal: false,
             detailsLoading: false,
             detailsid: "",
-            detailsdata: {
-                storename: "",
-                ownername: "",
-                ownercontactnumber: "",
-                address: "",
-                verifiedemail: "",
-                verifiedbyid: "", 
-                storecontactnumber: "",
-                owneremail: ""
+            detailsdata: [
+                {
+                    _id: "",
+                    storename: "",
+                    storeaddress: "",
+                    storecontactnumber: "",
+                    ownername: "",
+                    owneremail: "",
+                    verifiedemail: false,
+                    verifiedbyid: "",
+                    lang: "",
+                    lat: ""
+                }
+            ],
+            storeposition: {
+                lat: "",
+                lng: ""
             },
 
             //  #endregion
@@ -312,6 +363,7 @@ export default {
             }).then(() => {
                 this.selecteduserid = ""
                 this.RequestList()
+                this.StoreList()
             })
         },
         //  #endregion
@@ -423,10 +475,13 @@ export default {
             }
 
             this.detailsdata = responseData.data
+            this.storeposition.lat = Number(this.detailsdata[0].lat)
+            this.storeposition.lng = Number(this.detailsdata[0].lang)
             this.detailsLoading = false
         }
 
         //  #endregion
+        
     },
     mounted() {
         this.RequestList()
@@ -434,3 +489,9 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+::v-deep .modal-content {
+  width: 50%;
+}
+</style>

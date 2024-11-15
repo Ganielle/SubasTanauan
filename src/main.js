@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import { createWebHistory, createRouter } from "vue-router";
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import VueGoogleMaps from '@fawmi/vue-google-maps';
 
 // styles
 
@@ -135,4 +136,8 @@ const router = createRouter({
   routes,
 });
 
-createApp(App).use(router).use(vfmPlugin).use(VueSweetalert2).mount("#app");
+createApp(App).use(router).use(vfmPlugin).use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyCDuoNto3I8FpZ1b1wwA0CiZsGjxAEirR8',
+  },
+}).use(VueSweetalert2).mount("#app");
