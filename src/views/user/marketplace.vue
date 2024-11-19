@@ -28,9 +28,11 @@
                 v-model="criterias.livestock"
             >
                 <option value="">Please select your preferred livestock</option>
-                <option value="livestockA">Livestock A</option>
-                <option value="livestockB">Livestock B</option>
-                <option value="livestockC">Livestock C</option>
+                <option value="Cattle">Cattle</option>
+                <option value="Hogs">Hogs</option>
+                <option value="Swine">Swine</option>
+                <option value="Carabao">Carabao</option>
+                <option value="Goat">Goat</option>
             </select>
 
             <!--@click="GoBack()"-->
@@ -77,14 +79,34 @@ export default{
     name: 'user-marketplace',
     data(){
         return{
+
+            //  #region CRITERIAS
+
             criterias: {
                 pricerange: "",
                 livestock: ""
             },
-            loadingcriteria: false
+            loadingcriteria: false,
+
+            //  #endregion
+
+            //  #region GET ITEMS
+
+            itemlistpagination: {
+                page: 0,
+                totalpage: 1,
+                limit: 10
+            },
+            itemlistloading: false,
+            itemlist: []
+
+            //  #endregion
         }
     },
     methods: {
+
+        //  #region CRITERIAS
+
         async GetCriterias(){
             this.loadingcriteria = true
             const response = await fetch(`${process.env.VUE_APP_API_URL}/criteria/getcriteria`, {
@@ -112,6 +134,13 @@ export default{
             console.log(this.criterias)
             this.loadingcriteria = false
         }
+
+        //  #endregion
+
+        //  #region GET ITEMS
+
+
+        //  #endregion
     },
     mounted(){
         this.GetCriterias()

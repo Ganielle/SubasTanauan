@@ -152,7 +152,7 @@
                         <i class="fas fa-solid fa-spinner" style="animation:spin 4s linear infinite; font-size: 2rem;"></i>
                     </center>
                     <!--TABLE-->
-                    <InventoryItemTable v-else :storeitems="itemlist"/>
+                    <InventoryItemTable v-else :storeitems="itemlist" @item-edit="toggleEditItem"/>
                 </div>
                 <div v-else-if="storenavigation == 'Map'">
                     <GMapMap
@@ -286,6 +286,74 @@
                 </div>
             </vue-final-modal>
         </div>
+
+         <!--#region EDIT ITEM STORE-->
+         <div>
+            <vue-final-modal v-model="edititemmodal" classes="modal-container" :clickToClose="false" :escToClose="false" content-class="modal-content absolute inset-0 h-full overflow-auto">
+                <span class="modal__title">Edit Item</span>
+                <br/>
+                <div class="modal__content">
+                    <p>Item Name:</p>
+                    <input type="text" placeholder="Enter item name" class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-full" v-model="edititemlist.itemname"/>
+                    <br/><br/>
+                    
+                    <div class="relative w-full mb-3">
+                        <label
+                            class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                            htmlFor="grid-password"
+                        >
+                        Item Type:
+                        </label>
+                        <select
+                            type="text"
+                            class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                            v-model="edititemlist.itemtype"
+                        >
+                            <option value="">Please select item type</option>
+                            <option value="Cattle">Cattle</option>
+                            <option value="Hogs">Hogs</option>
+                            <option value="Swine">Swine</option>
+                            <option value="Carabao">Carabao</option>
+                            <option value="Goat">Goat</option>
+                        </select>
+                    </div>
+                    <br/>
+                    <p>Item Price:</p>
+                    <input type="number" placeholder="Enter item price" class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-full" v-model="edititemlist.itemprice"/>
+                    <br/><br/>
+                    <p>Item Qty:</p>
+                    <input type="number" placeholder="Enter item quantity" class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-full" v-model="edititemlist.itemqty"/>
+                    <br/><br/>
+                    <p>Item Description:</p>
+                    <textarea type="text" row="10" placeholder="Enter item description" class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-full" v-model="edititemlist.itemdescription"/>
+                    <br/><br/>
+                    <div class="relative w-full mb-3">
+                        <label
+                            class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                            htmlFor="grid-password"
+                        >
+                            Item Image:
+                        </label>
+                        <img :src="edititemlist.previewImage == null ? GetImage(edititemlist.image) : edititemlist.previewImage" class="uploading-image" />
+                        <input type="file" accept="image/jpeg" @change=uploadEditImage>
+                    </div>
+                </div>
+                <div class="modal__action">
+                    <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" @click="toggleEditItem()" :disabled="edititemloading">
+                        <center v-if="edititemloading">
+                        <i class="fas fa-solid fa-spinner" style="animation:spin 4s linear infinite;"></i>
+                        </center>
+                        <p v-else>Cancel</p>
+                    </button>
+                    <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" @click="editItem()" :disabled="edititemloading">
+                        <center v-if="edititemloading">
+                        <i class="fas fa-solid fa-spinner" style="animation:spin 4s linear infinite;"></i>
+                        </center>
+                        <p v-else>Edit Item</p>
+                    </button>
+                </div>
+            </vue-final-modal>
+        </div>
     </div>
 </template>
 
@@ -402,6 +470,35 @@ export default{
 
             //  #endregion
 
+            //  #region EDIT ITEMS
+            edititemmodal: false,
+            edititemloading: false,
+            edititemlist: {
+                    _id: "",
+                    storeowner: "",
+                    itemname: "",
+                    itemqty: 0,
+                    itemprice: 0,
+                    itemtype: "",
+                    itemdescription: "",
+                    image: "",
+                    previewImage: null,
+                    file: null
+                }, /**
+                {
+                    _id: "",
+                    storeowner: "",
+                    itemname: "",
+                    itemqty: 0,
+                    itemprice: 0,
+                    itemtype: "",
+                    itemdescription: "",
+                    image: "",
+                    status: ""
+                }
+             */
+            //  #endregion
+
             storenavigation: "Inventory"
         }
     },
@@ -410,6 +507,9 @@ export default{
         InventoryItemTable
     },
     methods: {
+        GetImage(data){
+            return new URL(`${process.env.VUE_APP_API_URL}/${data}`, import.meta.url).href
+        },
         //  #region APPLICATION
         toggleStoreApplicationForm(){
             if (this.storeapplicationloading) return
@@ -776,6 +876,125 @@ export default{
 
         //  #endregion
         
+        //  #region EDIT ITEM LIST
+
+        toggleEditItem(itemid){
+            if (this.edititemloading){
+                return
+            }
+
+            if (itemid){
+                this.edititemid = itemid
+                this.getitemdata(itemid)
+            }
+            else{
+                this.edititemlist = {
+                    _id: "",
+                    storeowner: "",
+                    itemname: "",
+                    itemqty: 0,
+                    itemprice: 0,
+                    itemtype: "",
+                    itemdescription: "",
+                    image: "",
+                    previewImage: null,
+                    file: null
+                }
+            }
+
+            this.edititemmodal = !this.edititemmodal
+        },
+        async getitemdata (itemid){
+            this.edititemloading = true
+
+            console.log(itemid)
+            const response = await fetch(`${process.env.VUE_APP_API_URL}/inventory/getinventoryitemdata?itemid=${itemid}`, {
+                method: 'GET',
+                headers: {
+                "Content-Type": "application/json"
+                },
+                credentials: "include"
+            });
+
+            const responseData = await response.json();
+
+            if (response.status === 400) {
+                //  API HERE
+                this.$swal({
+                title: responseData.data,
+                icon: "error"
+                })
+
+                this.edititemloading = false
+                return;
+            }
+
+            this.edititemlist = responseData.data.edititemlist
+            this.edititemloading = false
+        },
+        uploadEditImage(e) {
+            const image = e.target.files[0];
+            if (image) {
+                    this.edititemlist.file = image; // Store the file object directly
+                    const reader = new FileReader();
+                    reader.readAsDataURL(image);
+                    reader.onload = e => {
+                    this.edititemlist.previewImage = e.target.result; // Base64 string for preview
+                };
+            }
+        },
+        async editItem(){
+            this.edititemloading = true
+
+            const formData = new FormData()
+
+            formData.append("itemid", this.edititemlist._id)
+            formData.append("itemname", this.edititemlist.itemname)
+            formData.append("itemqty", this.edititemlist.itemqty)
+            formData.append("itemprice", this.edititemlist.itemprice)
+            formData.append("itemtype", this.edititemlist.itemtype)
+            formData.append("itemdescription", this.edititemlist.itemdescription)
+            formData.append("image", this.edititemlist.image)
+
+            if (this.edititemlist.file) {
+                formData.append("file", this.edititemlist.file);
+            }
+
+            const response = await fetch(`${process.env.VUE_APP_API_URL}/inventory/edititem`, {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                },
+                credentials: "include",
+                body: formData
+            });
+
+            const responseData = await response.json();
+
+            if (response.status === 400) {
+                //  API HERE
+                this.$swal({
+                title: responseData.data,
+                icon: "error"
+                })
+                this.edititemloading = false
+                return;
+            }
+
+            this.$swal({
+                title: "Item edited successfully",
+                icon: "success"
+            })
+            .then((action) => {
+                if (action.isConfirmed){
+                    this.edititemloading = false
+                    this.toggleEditItem()
+                    this.getitemlist()
+                }
+            })
+        },
+
+        //  #endregion
     },
     mounted(){
         this.checkStoreStatus()
