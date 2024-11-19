@@ -74,9 +74,10 @@
         </center>
         <div v-else class="px-4 mx-auto">
             <div class="flex flex-wrap">
-                <div v-for="item in itemlist" :key="item._id" class="w-4/12 px-4 flex-1" style="padding-bottom: 50px;">
+                <div v-for="(item, index) in itemlist" :key="item._id" class="w-1/4 px-4 flex-1" style="padding-bottom: 50px;">
                     
-                    <CardItem :image="item.image" :title="item.itemname" :stock="item.itemqty > 0 ? 'Available' : 'Out of Stock'" :description="item.itemdescription"/>
+                    <div v-if="(index + 1) % 4 === 0" class="w-full"></div>
+                    <CardItem v-else :image="item.image" :title="item.itemname" :stock="item.itemqty > 0 ? 'Available' : 'Out of Stock'" :description="item.itemdescription" />
                 </div>
             </div>
         </div>
