@@ -4,7 +4,7 @@
       class="text-black text-xl uppercase lg:inline-block font-semibold pt-12"
       href="javascript:void(0)"
     >
-      Manage Account / Customer Support
+      Manage Account / User
     </a>
     <hr class="my-4 md:min-w-full" />
     <br/>

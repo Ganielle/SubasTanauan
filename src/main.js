@@ -33,6 +33,7 @@ import ManageaccountAdmin from '@/views/superadmin/manageaccount/Admin.vue'
 import ManageaccountFinancer from '@/views/superadmin/manageaccount/Financer.vue'
 import ManageaccountCustomerSupport from '@/views/superadmin/manageaccount/Customersupport.vue'
 import ManageaccountUser from '@/views/superadmin/manageaccount/User.vue'
+import Manageuseridverification from '@/views/superadmin/manageaccount/Useridverification.vue'
 
 import Inventorystore from '@/views/superadmin/inventory/Store.vue'
 import InventoryItem from '@/views/superadmin/inventory/Items.vue'
@@ -75,6 +76,10 @@ const routes = [
       {
         path: "/superadmin/manageuser/user",
         component: ManageaccountUser
+      },
+      {
+        path: "/superadmin/manageuser/useridverification",
+        component: Manageuseridverification
       },
       {
         path: "/superadmin/inventory/store",
