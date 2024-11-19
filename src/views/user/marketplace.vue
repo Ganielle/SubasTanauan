@@ -68,13 +68,25 @@
             </button>
         </div>
         <br/><br/>
-        <center>
+        
+        <center v-if="itemlist.length <= 0">
             <p style="font-weight: bold; font-size: 1.5rem;">No Items Yet!</p>
         </center>
+        <div v-else class="px-4 mx-auto">
+            <div class="flex flex-wrap">
+                <div v-for="item in itemlist" :key="item._id" class="w-4/12 px-4 flex-1" style="padding-bottom: 50px;">
+                    
+                    <CardItem :image="item.image" :title="item.itemname" :stock="item.itemqty > 0 ? 'Available' : 'Out of Stock'" :description="item.itemdescription"/>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+
+import CardItem from '@/components/Cards/CardStoreItem.vue'
+
 export default{
     name: 'user-marketplace',
     data(){
@@ -98,10 +110,36 @@ export default{
                 limit: 10
             },
             itemlistloading: false,
-            itemlist: []
+            itemlist: [] 
+            /**
+                {
+                    "_id": "6737a16a2c0cae1ef384535d",
+                    "itemname": "Yukie Boi",
+                    "itemqty": 21,
+                    "itemprice": 3000,
+                    "itemtype": "Goat",
+                    "itemdescription": "Best boi ever forever",
+                    "image": "uploads\\1731956505351.jpg",
+                    "status": "Approved",
+                    "store": {
+                        "name": "MomCy's Cakes and Pastries",
+                        "address": "84 Mayon Street Libis Binangonan Ri",
+                        "contactnumber": "09672852303",
+                        "status": "Approved"
+                    },
+                    "owner": {
+                        "name": "Gabrielle Daniel",
+                        "verifiedid": "Approved",
+                        "emailverified": true
+                    }
+                }
+            */
 
             //  #endregion
         }
+    },
+    components: {
+        CardItem
     },
     methods: {
 
@@ -131,14 +169,50 @@ export default{
             }
 
             this.criterias = responseData.data.criterias
-            console.log(this.criterias)
             this.loadingcriteria = false
-        }
+
+            this.GetItemList()
+        },
 
         //  #endregion
 
         //  #region GET ITEMS
 
+        async GetItemList(){
+            this.itemlistloading = true
+
+            const response = await fetch(`${process.env.VUE_APP_API_URL}/inventory/getmarketplaceitem?price=${this.criterias.pricerange}&livestock=${this.criterias.livestock}&page=${this.itemlistpagination.page}&limit=10`, {
+                method: 'GET',
+                headers: {
+                "Content-Type": "application/json"
+                },
+                credentials: "include"
+            });
+
+            const responseData = await response.json();
+
+            if (response.status === 400) {
+                //  API HERE
+                this.$swal({
+                title: responseData.data,
+                icon: "error"
+                })
+
+                this.itemlistloading = false
+                return;
+            }
+
+            this.itemlist = responseData.data.list
+            this.itemlistpagination.totalpage = responseData.data.totalpages <= 0 ? 1 : responseData.data.totalpages
+
+            if (this.itemlistpagination.totalpage - 1 < this.itemlistpagination.page){
+                this.itemlistpagination.page -= 1
+                this.getitemlist();
+                return;
+            }
+
+            this.itemlistloading = false
+        }
 
         //  #endregion
     },
