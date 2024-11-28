@@ -31,7 +31,7 @@
       </button>
     </div>
     <br/><br/>
-    <Usertable :useritems="itemlist" @view-id="viewID"/>
+    <Usertable :useritems="itemlist" @view-id="viewID" @approve-user="approveUser"/>
 
   </div>
 </template>
@@ -94,6 +94,41 @@ export default {
       }
 
       this.itemlistloading = false
+    },
+    async approveUser(data) {
+      this.$swal({
+        title: "Are you sure you want to approve this user?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, approve it!"
+      }).then(async (value) => {
+        if (value.isConfirmed){
+          const response = await fetch(`${process.env.VUE_APP_API_URL}/users/deletestaff`, {
+            method: 'POST',
+            headers: {
+              "Content-Type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify({
+              "userid": data
+            })
+          });
+
+          const responseData = await response.json();
+
+          if (response.status === 400) {
+            //  API HERE
+            this.$swal({
+              title: responseData.data,
+              icon: "error"
+            })
+
+            return;
+          }
+        }
+      })
     }
   },
   mounted() {
