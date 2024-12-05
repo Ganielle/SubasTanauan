@@ -113,8 +113,8 @@
                             <i class="fas fa-chevron-right"></i>
                         </button>
                     </div>
+                    <br/><br/>
                     <center v-if="requestlistloading">
-                        <br/><br/>
                         <i class="fas fa-solid fa-spinner" style="animation:spin 4s linear infinite; font-size: 2rem;"></i>
                     </center>
                     <!--TABLE-->
@@ -152,7 +152,7 @@
                         <i class="fas fa-solid fa-spinner" style="animation:spin 4s linear infinite; font-size: 2rem;"></i>
                     </center>
                     <!--TABLE-->
-                    <InventoryItemTable v-else :storeitems="itemlist" @item-edit="toggleEditItem"/>
+                    <InventoryItemTable v-else :storeitems="itemlist" @item-edit="toggleEditItem" @live-bidding="AddToLiveBidding"/>
                 </div>
                 <div v-else-if="storenavigation == 'Map'">
                     <GMapMap
@@ -288,7 +288,7 @@
         </div>
 
          <!--#region EDIT ITEM STORE-->
-         <div>
+        <div>
             <vue-final-modal v-model="edititemmodal" classes="modal-container" :clickToClose="false" :escToClose="false" content-class="modal-content absolute inset-0 h-full overflow-auto">
                 <span class="modal__title">Edit Item</span>
                 <br/>
@@ -358,6 +358,7 @@
 </template>
 
 <script>
+import { socket } from '@/socket'
 
 import InventoryTable from "@/components/Subastanauan/Dashboard/User/Inventorytable.vue";
 import InventoryItemTable from "@/components/Subastanauan/Dashboard/User/Inventoryapprovetable.vue";
@@ -544,6 +545,7 @@ export default{
             this.storeid = responseData.data.storeid
 
             if (this.idstatus == "Approved" && this.status == "Approved"){
+                socket.connect();
                 this.getStoreDetails()
             }
 
@@ -907,7 +909,6 @@ export default{
         async getitemdata (itemid){
             this.edititemloading = true
 
-            console.log(itemid)
             const response = await fetch(`${process.env.VUE_APP_API_URL}/inventory/getinventoryitemdata?itemid=${itemid}`, {
                 method: 'GET',
                 headers: {
@@ -993,6 +994,68 @@ export default{
                 }
             })
         },
+
+        //  #endregion
+
+        //  #region ADD TO LIVE BIDDING
+
+        AddToLiveBidding(data) {
+            if (!data){
+                this.$swal({
+                    title: "Please select a valid item",
+                    icon: "error"
+                })
+                return;
+            }
+
+            this.$swal({
+                title: "Are you sure you want to add this to the live bidding?",
+                icon: "warning",
+                allowOutsideClick: false,
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, Add it!"
+            })
+            .then(async value => {
+                if (value.isConfirmed){
+                    this.itemlistloading = true;
+
+                    const response = await fetch(`${process.env.VUE_APP_API_URL}/livebidding/additemtolivebidding`, {
+                        method: 'POST',
+                        headers: {
+                        "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            "itemid": data
+                        }),
+                        credentials: "include"
+                    });
+
+                    const responseData = await response.json();
+
+                    if (response.status === 400) {
+                        //  API HERE
+                        this.$swal({
+                            title: responseData.data,
+                            icon: "error"
+                        })
+
+                        this.itemlistloading = false;
+                        return;
+                    }
+
+                    this.$swal({
+                        title: "Successfully added to live bidding",
+                        icon: "success"
+                    })
+
+                    socket.emit("add-to-live-bid")
+
+                    this.getitemlist();
+                }
+            })
+        }
 
         //  #endregion
     },

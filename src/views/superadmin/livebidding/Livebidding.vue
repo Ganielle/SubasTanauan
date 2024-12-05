@@ -8,73 +8,110 @@
         </a>
         <hr class="my-4 md:min-w-full" />
         <br/>
-        <div>
-            <div class="mb-3 pt-0" style="display: flex; gap: 10px;">
-                <input type="text" placeholder="Search Customer support" class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline"/>
-                
-                <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
-                Clear Search
-                </button>
+
+        <div class="container px-6">
+            <div class="flex flex-wrap">
+                <div class="w-full px-6 flex-1">
+                    <!--#region ITEM PICTURE-->
+                    <div style="width: 100%; background-color: gainsboro;">
+                        <div style="padding: 10px;">
+                            <center>No Picture Yet!</center>
+                        </div>
+                    </div>
+                    <br/>
+                    <!--#region ITEM DESCRIPTION-->
+                    <div style="width: 100%; background-color: gainsboro; padding: 10px;">
+                        <p style="font-style: italic; font-size: 1.2rem;">Description:</p>
+                        <div style="height: 200px; overflow-y: auto;">
+                            <center>
+                                No Description Yet! No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!No Description Yet!
+                            </center>
+                        </div>
+                    </div>
+                    <!--#region LIVE BIDDING CONTROL PANEL-->
+                    <div class="container px-4 mx-auto">
+                        <div class="flex flex-wrap">
+                            <div class="w-full px-4 flex-1">
+                                <span class="text-sm block my-4 p-3 text-blueGray-700 rounded border" style="background-color: green; text-align: center; color: white; cursor: pointer; height: 100%; width: 100%;  display: grid; place-items: center;">Turn On Live Bidding</span>
+                            </div>
+                            <!-- <div class="w-full px-4 flex-1">
+                                <span class="text-sm block my-4 p-3 text-blueGray-700 rounded border" style="background-color: yell; text-align: center; color: white; cursor: pointer; height: 100%; width: 100%;  display: grid; place-items: center;">Start Countdown</span>
+                            </div> -->
+                            <div class="w-full px-4 flex-1">
+                                <span class="text-sm block my-4 p-3 text-blueGray-700 rounded border" style="background-color: blue; text-align: center; color: white; cursor: pointer; height: 100%; width: 100%;  display: grid; place-items: center;">Next Item</span>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <!--#region BID STATUS-->
+                    <div style="background-color: gainsboro; padding: 10px; display: grid; place-items: center;">
+                        <p style="font-size: 1.3rem;">BIDDING COUNTDOWN</p>
+                        <p style="font-size: 1.5rem;">10</p>
+                    </div>
+                    <!--#region BID HISTORY-->
+                </div>
+                <div class="w-full px-6 flex-1">
+                    <center style="font-size: 1.5rem; font-weight: bold;">
+                        CHATBOX
+                    </center>
+                    <div style="width: 100%; height: 450px; background-color: gainsboro; display: flex; flex-direction: column; gap: 10px; margin: 0 auto; overflow-y: auto; padding: 10px;">
+                        <div style="background-color: white; color: black; max-width: 70%; padding: 5px; align-self: flex-start;">
+                            <p style="font-style: italic; color: green;">System:</p> 
+                            Welcome user to the live bidding! Enjoy your stay
+                        </div>
+                        <div style="background-color: white; color: black; max-width: 70%; padding: 5px; align-self: flex-end;">
+                            <p style="font-style: italic; color: blue;">Me:</p> 
+                            Hello guys!
+                        </div>
+                        <div style="background-color: white; color: black; max-width: 70%; padding: 5px; align-self: flex-end;">
+                            <p style="font-style: italic; color: blue;">Me:</p> 
+                            Wtf is this shit! I'm currently bidding the highest but the system doesn't recognize my bid
+                        </div>
+                        <div style="background-color: white; color: black; max-width: 70%; padding: 5px; align-self: flex-start;">
+                            <p style="font-style: italic; color: red;">Ganielle:</p> 
+                            Stay calm! Keep bidding buddy
+                        </div>
+                        <div style="background-color: white; color: black; max-width: 70%; padding: 5px; align-self: flex-start;">
+                            <p style="font-style: italic; color: red;">Ganielle:</p> 
+                            Stay calm! Keep bidding buddy
+                        </div>
+                        <div style="background-color: white; color: black; max-width: 70%; padding: 5px; align-self: flex-start;">
+                            <p style="font-style: italic; color: red;">Ganielle:</p> 
+                            Stay calm! Keep bidding buddy
+                        </div>
+                        <div style="background-color: white; color: black; max-width: 70%; padding: 5px; align-self: flex-start;">
+                            <p style="font-style: italic; color: red;">Ganielle:</p> 
+                            Stay calm! Keep bidding buddy
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="flex flex-wrap">
+                            <div class="w-10/12">
+                                <input type="text" placeholder="Enter your chat here" class="px-3 py-4 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-base shadow outline-none focus:outline-none focus:shadow-outline w-full pl-10"/>
+                            </div>
+                            <div class="w-full flex-1">
+                                <div style="background-color: green; height: 100%; width: 100%; display: grid; place-items: center; cursor: pointer;">
+                                    <div style="color: white;">
+                                        SEND
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <br/>
-        <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button"> <!-- v-on:click="toggleCreateUser()"-->
-            Create Live Bidding Room
-        </button>
-        <br/><br/><br/>
-        <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
-            <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-
-            <p style="font-size: 1.4rem; font-weight: bold;">1</p>
-
-            <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
-        <br/><br/>
-        <Livebiddingtable @delete-room="toggleDeleteRoom" @enter-control-panel="toggleEnterRoom" />
-        <!--CREATE LIVE BIDDING-->
-
     </div>
 </template>
 
 <script>
-import Livebiddingtable from "@/components/Subastanauan/Dashboard/Superadmin/livebidding/livebiddingtable.vue";
 
 export default{
     name: "live-bidding",
     components: {
-        Livebiddingtable
     },
     methods: {
-        toggleDeleteRoom(){
-            this.$swal({
-                title: "Are you sure you want to delete this room?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
-            }).then(() => {
-
-            })
-        },
-        toggleEnterRoom(){
-            this.$swal({
-                title: "Are you sure you want to enter this room?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
-            }).then((data) => {
-                if (data.isConfirmed){
-                    this.$router.push({path: "/admin/livebidding/controls"})
-                }
-            })
-        },
+        
     }
 }
 </script>

@@ -48,6 +48,7 @@ import Livebiddingcontrol from '@/views/superadmin/livebidding/Livebiddingcontro
 import Userdashboard from '@/views/user/Dashboard.vue'
 import Usermarketplace from '@/views/user/marketplace.vue'
 import Userstore from '@/views/user/Store.vue'
+import Userlivebidding from '@/views/user/Livebidding.vue'
 
 //  #endregion
 
@@ -115,6 +116,10 @@ const routes = [
       {
         path: "/user/store",
         component: Userstore
+      },
+      {
+        path: "/user/livebidding",
+        component: Userlivebidding
       }
     ]
   },

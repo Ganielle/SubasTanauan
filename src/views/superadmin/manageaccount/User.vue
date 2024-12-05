@@ -11,31 +11,31 @@
     <!-- Header -->
     <div>
       <div class="mb-3 pt-0" style="display: flex; gap: 10px;">
-        <input type="text" placeholder="Search Customer support" class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline"/>
+        <input type="text" placeholder="Search User" class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline" v-model="search" @input="searchUser"/>
         
-        <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+        <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" @click="clearSearch()" :disabled="loadingapi">
           Clear Search
         </button>
       </div>
     </div>
     <br/>
-    <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" v-on:click="toggleCreateUser()">
+    <!-- <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" v-on:click="toggleCreateUser()">
       Create User
-    </button>
-    <br/><br/><br/>
+    </button> -->
+    <br/>
     <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
-      <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+      <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" :disabled="pagination.page <= 0" @click="previousePage() || loadingapi">
         <i class="fas fa-chevron-left"></i>
       </button>
 
-      <p style="font-size: 1.4rem; font-weight: bold;">1</p>
+      <p style="font-size: 1.4rem; font-weight: bold;">{{ pagination.page + 1 }} / {{ pagination.totalpage }}</p>
 
-      <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+      <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" :disabled="pagination.page >= pagination.totalpage - 1" @click="nextPage() || loadingapi">
         <i class="fas fa-chevron-right"></i>
       </button>
     </div>
     <br/><br/>
-    <Usertable @edit-user="toggleEditUser()" @delete-user="toggleDeleteUser()"/>
+    <Usertable @edit-user="toggleEditUser()" @delete-user="toggleDeleteUser" :useritems="userlist" :loading="loadingapi"/>
 
     <!--#region CREATE ACCOUNT-->
     <div>
@@ -113,7 +113,16 @@ export default {
   data() {
     return {
       showModal: false,
-      showModalEdit: false
+      showModalEdit: false,
+      loadingapi: false,
+      search: "",
+      pagination: {
+        page: 0,
+        totalpage: 1,
+        limit: 10
+      },
+      userlist: [],
+      debounceTimeout: null,
     }
   },
   components: {
@@ -137,7 +146,73 @@ export default {
       }).then(() => {
 
       })
-    }
+    },
+    async listUsers() {
+      this.loadingapi = true
+      const response = await fetch(`${process.env.VUE_APP_API_URL}/users/liststaffs?authfilter=user&fullnamefilter=${this.search}&page=${this.pagination.page}&limit=${this.pagination.limit}`, {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include"
+      });
+
+      const responseData = await response.json();
+
+      if (response.status === 400) {
+        //  API HERE
+        this.$swal({
+          title: responseData.data,
+          icon: "error"
+        })
+
+        this.loadingapi = false
+        return;
+      }
+      else{
+        this.pagination.totalpage = responseData.data.totalpages <= 0 ? 1 : responseData.data.totalpages
+
+        if (this.pagination.totalpage - 1 < this.pagination.page){
+          this.pagination.page -= 1
+          this.listUsers();
+          return;
+        }
+        
+        this.userlist = responseData.data.list
+        
+        this.loadingapi = false
+      }
+    },
+    searchUser(){
+      if (this.loadingapi){
+        return
+      }
+      clearTimeout(this.debounceTimeout);
+      this.debounceTimeout = setTimeout(() => {
+        this.pagination.page = 0
+        this.listUsers();
+      }, 500); // Adjust delay as needed (e.g., 500 ms)
+    },
+    clearSearch(){
+      if (this.loadingapi){
+        return
+      }
+      this.pagination.page = 0
+      this.search = ""
+
+      this.listUsers()
+    },
+    nextPage(){
+      this.pagination.page++
+      this.listUsers()
+    },
+    previousePage(){
+      this.pagination.page--;
+      this.listUsers()
+    },
+  },
+  mounted(){
+    this.listUsers()
   }
 };
 </script>

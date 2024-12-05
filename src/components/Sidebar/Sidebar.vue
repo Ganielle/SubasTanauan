@@ -267,7 +267,7 @@
         <!--#region FOURTH NAVIGATION-->
         <hr class="my-4 md:min-w-full" />
         <ul class="md:flex-col md:min-w-full flex flex-col list-none">
-          <li class="items-center">
+          <!-- <li class="items-center">
             <router-link
               to="/superadmin/livebidding"
               v-slot="{ href, navigate, isActive }"
@@ -289,7 +289,7 @@
                 Live Bidding
               </a>
             </router-link>
-          </li>
+          </li> -->
 
           <li class="items-center">
             <router-link

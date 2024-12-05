@@ -80,7 +80,7 @@
             >
               Date Created
             </th>
-            <th
+            <!-- <th
               class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
               :class="[
                 color === 'light'
@@ -89,38 +89,25 @@
               ]"
             >
               Action
-            </th>
-            <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-              :class="[
-                color === 'light'
-                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
-            ></th>
+            </th> -->
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr v-for="user in useritems" :key="user.userid">
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              12903890asdjfhkjbaxfuia
+            {{ user.userid }}
             </td>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              admintest
+            {{ user.username }}
             </td>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              Admin Testing D. Developer
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              ₱10,000.00
+            {{ user.fullname }}
             </td>
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
@@ -130,20 +117,31 @@
             <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
-              October 30, 2024
+              ₱10,000.00
             </td>
             <td
+              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+            >
+            {{ user.createdAt }}
+            </td>
+            <!-- <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
               <div style="display: flex; text-align: center; align-items: center;">
-                <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" @click="$emit('edit-user')">
+                <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" @click="$emit('edit-user', {
+                  'userid': user.userid,
+                  'password': '',
+                  'username': user.username,
+                  'firstname': user.firstname,
+                  'lastname': user.lastname
+                })">
                   Edit User
                 </button>
-                <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" @click="$emit('delete-user')">
+                <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" @click="$emit('delete-user', user.userid)">
                   Delete User
                 </button>
               </div>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>
@@ -167,6 +165,14 @@ export default {
         return ["light", "dark"].indexOf(value) !== -1;
       },
     },
+    useritems: {
+      type: Array,
+      default: () => [], // Set an empty array as the default value
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    }
   },
 };
 </script>
