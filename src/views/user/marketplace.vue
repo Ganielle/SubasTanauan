@@ -170,6 +170,14 @@ export default{
                 this.loadingcriteria = false
                 return;
             }
+            else if (response.status == 401){
+                this.$swal({
+                title: "Authentication Failed! You will now be redirected to the login page",
+                icon: "error"
+                })
+
+                this.$router.push({path: "/"})
+            }
 
             this.criterias = responseData.data.criterias
             this.loadingcriteria = false
@@ -203,6 +211,14 @@ export default{
 
                 this.itemlistloading = false
                 return;
+            }
+            else if (response.status == 401){
+                this.$swal({
+                title: "Authentication Failed! You will now be redirected to the login page",
+                icon: "error"
+                })
+
+                this.$router.push({path: "/"})
             }
 
             this.itemlist = responseData.data.list

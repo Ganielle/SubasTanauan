@@ -539,6 +539,14 @@ export default{
                 this.storestatusloading = false
                 return;
             }
+            else if (response.status == 401){
+                this.$swal({
+                title: "Authentication Failed! You will now be redirected to the login page",
+                icon: "error"
+                })
+
+                this.$router.push({path: "/"})
+            }
 
             this.idstatus = responseData.data.idstatus
             this.status = responseData.data.status
@@ -574,6 +582,14 @@ export default{
 
                 this.storestatusloading = false
                 return;
+            }
+            else if (response.status == 401){
+                this.$swal({
+                title: "Authentication Failed! You will now be redirected to the login page",
+                icon: "error"
+                })
+
+                this.$router.push({path: "/"})
             }
 
             this.$swal({
@@ -616,6 +632,14 @@ export default{
                 })
                 return;
             }
+            else if (response.status == 401){
+                this.$swal({
+                title: "Authentication Failed! You will now be redirected to the login page",
+                icon: "error"
+                })
+
+                this.$router.push({path: "/"})
+            }
 
             this.application.address = responseData.results[0].formatted_address
             this.application.lat = lat
@@ -647,6 +671,14 @@ export default{
 
                 this.detailsLoading = false
                 return;
+            }
+            else if (response.status == 401){
+                this.$swal({
+                title: "Authentication Failed! You will now be redirected to the login page",
+                icon: "error"
+                })
+
+                this.$router.push({path: "/"})
             }
 
             this.detailsdata = responseData.data
@@ -697,6 +729,14 @@ export default{
                 })
                 this.createitemloading = false
                 return;
+            }
+            else if (response.status == 401){
+                this.$swal({
+                title: "Authentication Failed! You will now be redirected to the login page",
+                icon: "error"
+                })
+
+                this.$router.push({path: "/"})
             }
 
             this.$swal({
@@ -767,6 +807,14 @@ export default{
                 this.requestlistloading = false
                 return;
             }
+            else if (response.status == 401){
+                this.$swal({
+                title: "Authentication Failed! You will now be redirected to the login page",
+                icon: "error"
+                })
+
+                this.$router.push({path: "/"})
+            }
 
             this.requestlist = responseData.data.list
             this.requestlistpagination.totalpage = responseData.data.totalpages <= 0 ? 1 : responseData.data.totalpages
@@ -834,6 +882,14 @@ export default{
 
                 this.itemlistloading = false
                 return;
+            }
+            else if (response.status == 401){
+                this.$swal({
+                title: "Authentication Failed! You will now be redirected to the login page",
+                icon: "error"
+                })
+
+                this.$router.push({path: "/"})
             }
 
             this.itemlist = responseData.data.list
@@ -929,6 +985,14 @@ export default{
                 this.edititemloading = false
                 return;
             }
+            else if (response.status == 401){
+                this.$swal({
+                title: "Authentication Failed! You will now be redirected to the login page",
+                icon: "error"
+                })
+
+                this.$router.push({path: "/"})
+            }
 
             this.edititemlist = responseData.data.edititemlist
             this.edititemloading = false
@@ -980,6 +1044,14 @@ export default{
                 })
                 this.edititemloading = false
                 return;
+            }
+            else if (response.status == 401){
+                this.$swal({
+                title: "Authentication Failed! You will now be redirected to the login page",
+                icon: "error"
+                })
+
+                this.$router.push({path: "/"})
             }
 
             this.$swal({
@@ -1043,6 +1115,14 @@ export default{
 
                         this.itemlistloading = false;
                         return;
+                    }
+                    else if (response.status == 401){
+                        this.$swal({
+                        title: "Authentication Failed! You will now be redirected to the login page",
+                        icon: "error"
+                        })
+
+                        this.$router.push({path: "/"})
                     }
 
                     this.$swal({

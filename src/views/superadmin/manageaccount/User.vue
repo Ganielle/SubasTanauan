@@ -169,6 +169,14 @@ export default {
         this.loadingapi = false
         return;
       }
+      else if (response.status == 401){
+        this.$swal({
+          title: "Authentication Failed! You will now be redirected to the login page",
+          icon: "error"
+        })
+
+        this.$router.push({path: "/"})
+      }
       else{
         this.pagination.totalpage = responseData.data.totalpages <= 0 ? 1 : responseData.data.totalpages
 

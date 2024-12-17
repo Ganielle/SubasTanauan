@@ -57,7 +57,7 @@
             </button>
         </div>
         <br/><br/>
-        <Itemlisttable  @delete-item                                                    ="toggleDeleteItem()"/> <!--@edit-store="toggleApproveStore()"-->
+        <Itemlisttable  @delete-item="toggleDeleteItem()"/> <!--@edit-store="toggleApproveStore()"-->
         <br/><br/>
         <br/><br/>
     </div>

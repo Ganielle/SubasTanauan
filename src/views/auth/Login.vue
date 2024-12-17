@@ -246,6 +246,14 @@ export default {
         this.loginloading = false;
         return;
       }
+      else if (response.status == 401){
+        this.$swal({
+          title: "Authentication Failed! You will now be redirected to the login page",
+          icon: "error"
+        })
+
+        this.$router.push({path: "/"})
+      }
       else{
         this.userauth = responseData.data.auth
 
@@ -323,6 +331,14 @@ export default {
         this.loginloading = false;
         return;
       }
+      else if (response.status == 401){
+        this.$swal({
+          title: "Authentication Failed! You will now be redirected to the login page",
+          icon: "error"
+        })
+
+        this.$router.push({path: "/"})
+      }
 
       this.$swal({
             title: "Welcome back!",
@@ -382,6 +398,14 @@ export default {
         })
         this.loginloading = false;
         return;
+      }
+      else if (response.status == 401){
+        this.$swal({
+          title: "Authentication Failed! You will now be redirected to the login page",
+          icon: "error"
+        })
+
+        this.$router.push({path: "/"})
       }
 
       this.$swal({

@@ -82,7 +82,7 @@
         </thead>
         <tbody>
           <tr>
-            <td
+            <!-- <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
               zmclxvnjlrahpoiaw
@@ -101,19 +101,16 @@
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
               Store Address testing, Philippines
-            </td>
-            <td
+            </td> -->
+            <!-- <td
               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
             >
               <div style="display: flex; text-align: center; align-items: center;">
-                <!-- <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" @click="$emit('edit-store')">
-                  Edit
-                </button> -->
                 <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" @click="$emit('delete-item')">
                   Delete
                 </button>
               </div>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>

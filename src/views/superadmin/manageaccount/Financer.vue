@@ -222,6 +222,14 @@ export default {
 
             return;
           }
+          else if (response.status == 401){
+            this.$swal({
+              title: "Authentication Failed! You will now be redirected to the login page",
+              icon: "error"
+            })
+
+            this.$router.push({path: "/"})
+          }
           else{
             this.$swal({
                 title: "Admin successfully deleted",
@@ -261,6 +269,14 @@ export default {
 
         this.loadingapi = false
         return;
+      }
+      else if (response.status == 401){
+        this.$swal({
+          title: "Authentication Failed! You will now be redirected to the login page",
+          icon: "error"
+        })
+
+        this.$router.push({path: "/"})
       }
       else{
         this.pagination.totalpage = responseData.data.totalpages <= 0 ? 1 : responseData.data.totalpages
@@ -356,6 +372,14 @@ export default {
         this.loadingapi = false
         return;
       }
+      else if (response.status == 401){
+        this.$swal({
+          title: "Authentication Failed! You will now be redirected to the login page",
+          icon: "error"
+        })
+
+        this.$router.push({path: "/"})
+      }
       else if (this.createUserdetails.lastname == ""){
         this.$swal({
           title: "Please enter your last name"
@@ -391,6 +415,14 @@ export default {
       
         this.loadingapi = false
         return;
+      }
+      else if (response.status == 401){
+        this.$swal({
+          title: "Authentication Failed! You will now be redirected to the login page",
+          icon: "error"
+        })
+
+        this.$router.push({path: "/"})
       }
       else{
         this.$swal({
@@ -504,6 +536,14 @@ export default {
         })
       this.loadingapi = true
         return;
+      }
+      else if (response.status == 401){
+        this.$swal({
+          title: "Authentication Failed! You will now be redirected to the login page",
+          icon: "error"
+        })
+
+        this.$router.push({path: "/"})
       }
       else{
         this.$swal({

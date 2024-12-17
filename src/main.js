@@ -41,6 +41,10 @@ import InventoryItem from '@/views/superadmin/inventory/Items.vue'
 import Livebidding from '@/views/superadmin/livebidding/Livebidding.vue'
 import Livebiddingcontrol from '@/views/superadmin/livebidding/Livebiddingcontrol.vue'
 
+import Announcement from '@/views/superadmin/announcement/announcement.vue'
+
+import Load from '@/views/superadmin/load/Load.vue'
+
 //  #endregion
 
 //  #region USER
@@ -98,6 +102,14 @@ const routes = [
         path: "/superadmin/livebidding/controls",
         component: Livebiddingcontrol
       },
+      {
+        path: "/superadmin/announcement",
+        component: Announcement
+      },
+      {
+        path: "/superadmin/load",
+        component: Load
+      }
     ],
   },
   {

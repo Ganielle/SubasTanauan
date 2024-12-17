@@ -282,6 +282,14 @@ export default {
                 this.loadingapi = false
                 return;
             }
+            else if (response.status == 401){
+                this.$swal({
+                title: "Authentication Failed! You will now be redirected to the login page",
+                icon: "error"
+                })
+
+                this.$router.push({path: "/"})
+            }
 
 
             this.paginationrequest.totalpage = responseData.data.totalpages <= 0 ? 1 : responseData.data.totalpages
@@ -355,6 +363,14 @@ export default {
                 this.loadingapi = false
                 return;
             }
+            else if (response.status == 401){
+                this.$swal({
+                title: "Authentication Failed! You will now be redirected to the login page",
+                icon: "error"
+                })
+
+                this.$router.push({path: "/"})
+            }
 
             this.$swal({
                 title: "Admin successfully deleted",
@@ -391,6 +407,14 @@ export default {
 
                 this.loadingapi = false
                 return;
+            }
+            else if (response.status == 401){
+                this.$swal({
+                title: "Authentication Failed! You will now be redirected to the login page",
+                icon: "error"
+                })
+
+                this.$router.push({path: "/"})
             }
 
 
@@ -472,6 +496,14 @@ export default {
 
                 this.detailsLoading = false
                 return;
+            }
+            else if (response.status == 401){
+                this.$swal({
+                title: "Authentication Failed! You will now be redirected to the login page",
+                icon: "error"
+                })
+
+                this.$router.push({path: "/"})
             }
 
             this.detailsdata = responseData.data

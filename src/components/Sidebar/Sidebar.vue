@@ -293,7 +293,7 @@
 
           <li class="items-center">
             <router-link
-              to="/superadmin/payments"
+              to="/superadmin/load"
               v-slot="{ href, navigate, isActive }"
             >
               <a
@@ -340,6 +340,59 @@
           </li>
         </ul>
 
+        <!--#region FIFTH NAVIGATION-->
+        <hr class="my-4 md:min-w-full" />
+        <ul class="md:flex-col md:min-w-full flex flex-col list-none">
+          <!-- <li class="items-center">
+            <router-link
+              to="/superadmin/livebidding"
+              v-slot="{ href, navigate, isActive }"
+            >
+              <a
+                :href="href"
+                @click="navigate"
+                class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                    ? 'text-emerald-500 hover:text-emerald-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500',
+                ]"
+              >
+                <i
+                  class="fas fa-tv mr-2 text-sm"
+                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                ></i>
+                Live Bidding
+              </a>
+            </router-link>
+          </li> -->
+
+          <li class="items-center">
+            <router-link
+              to="/superadmin/announcement"
+              v-slot="{ href, navigate, isActive }"
+            >
+              <a
+                :href="href"
+                @click="navigate"
+                class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                    ? 'text-emerald-500 hover:text-emerald-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500',
+                ]"
+              >
+                <i
+                  class="fas fa-bullhorn mr-2 text-sm"
+                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                ></i>
+                ANNOUNCEMENT
+              </a>
+            </router-link>
+          </li>
+        </ul>
+
+        <br/>
       </div>
       <button
         class="bg-emerald-500 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-2 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
@@ -392,6 +445,14 @@ export default {
 
             this.walletloading = false
             return;
+          }
+          else if (response.status == 401){
+            this.$swal({
+              title: "Authentication Failed! You will now be redirected to the login page",
+              icon: "error"
+            })
+
+            this.$router.push({path: "/"})
           }
 
           this.$router.push("/")

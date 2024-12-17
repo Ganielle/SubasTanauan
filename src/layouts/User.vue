@@ -15,5 +15,49 @@ export default {
   components: {
     Sidebar,
   },
+  methods: {
+    async FetchAnnouncement(){
+      const response = await fetch(`${process.env.VUE_APP_API_URL}/announcement/getannouncement`, {
+        method: 'GET',
+        headers: {
+        "Content-Type": "application/json"
+        },
+        credentials: "include",
+      });
+
+      const responseData = await response.json();
+
+      if (response.status === 400) {
+        //  API HERE
+        this.$swal({
+        title: responseData.data,
+        icon: "error"
+        })
+
+        return;
+      }
+      else if (response.status == 401){
+        this.$swal({
+          title: "Authentication Failed! You will now be redirected to the login page",
+          icon: "error"
+        })
+
+        this.$router.push({path: "/"})
+      }
+      
+      if (responseData.data.title == ''){
+        return;
+      }
+      
+      this.$swal({
+        title: responseData.data.title,
+        text: responseData.data.content,
+        icon: "info"
+      })
+    }
+  },
+  mounted(){
+    this.FetchAnnouncement()
+  }
 };
 </script>
