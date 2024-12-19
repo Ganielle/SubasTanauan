@@ -68,6 +68,17 @@ import Itemrequesttable from "@/components/Subastanauan/Dashboard/Superadmin/Inv
 import Itemlisttable from "@/components/Subastanauan/Dashboard/Superadmin/Inventory/Itemlisttable.vue";
 export default {
     name: "inventory-store-page",
+    data(){
+        return{
+            requestlist:[],
+            requestpagination: {
+                page: 0,
+                limit: 10,
+                totalpage: 1
+            },
+            requestlistloading: false
+        }
+    },
     components: {
         Itemrequesttable,
         Itemlisttable
@@ -108,7 +119,58 @@ export default {
             }).then(() => {
 
             })
+        },
+
+        //  #region REQUEST LIST
+
+        async GetRequestList(){
+            this.requestloading = true
+
+            const response = await fetch(`${process.env.VUE_APP_API_URL}/store/storelist?storenamefilter=${this.requestsearch}&statusfilter=Pending&page=${this.paginationrequest.page}&limit=10`, {
+                method: 'GET',
+                headers: {
+                "Content-Type": "application/json"
+                },
+                credentials: "include"
+            });
+
+            const responseData = await response.json();
+
+            if (response.status === 400) {
+                //  API HERE
+                this.$swal({
+                title: responseData.data,
+                icon: "error"
+                })
+
+                this.loadingapi = false
+                return;
+            }
+            else if (response.status == 401){
+                this.$swal({
+                title: "Authentication Failed! You will now be redirected to the login page",
+                icon: "error"
+                })
+
+                this.$router.push({path: "/"})
+            }
+
+
+            this.requestpagination.totalpage = responseData.data.totalpages <= 0 ? 1 : responseData.data.totalpages
+            
+            if (this.requestpagination.totalpage - 1 < this.requestpagination.page){
+                this.requestpagination.page -= 1
+                this.GetRequestList();
+                return;
+            }
+
+            
+            this.requestlist = responseData.data.list
+
+            this.requestloading = false
         }
+
+        //  #endregiom
     }
 }
 </script>
